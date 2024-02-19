@@ -4,11 +4,11 @@ module.exports = {
   extends: [
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
-    'plugin:@typescript-eslint/recommended-type-checked', // hozzáadva
-    'plugin:@typescript-eslint/stylistic-type-checked', // opcionálisan hozzáadva
+    'plugin:@typescript-eslint/recommended-type-checked',
+    'plugin:@typescript-eslint/stylistic-type-checked', 
     'plugin:react-hooks/recommended',
-    'plugin:react/recommended', // hozzáadva
-    'plugin:react/jsx-runtime' // hozzáadva
+    'plugin:react/recommended',
+    'plugin:react/jsx-runtime'
   ],
   ignorePatterns: ['dist', '.eslintrc.cjs'],
   parser: '@typescript-eslint/parser',

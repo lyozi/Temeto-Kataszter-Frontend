@@ -19,10 +19,10 @@ const Header = () => {
           {/* A Box komponensben jelenítjük meg a képet és a szöveget */}
           <Box display="flex" alignItems="center">
             <Image 
-            boxSize='15%'
+            boxSize='10%'
             src={logo2}
             />
-            <span style={{ fontFamily: 'Arial', fontSize: '35px' }}>Bályok</span>
+            <span style={{ fontFamily: 'Arial', fontSize: '45px' }}>Bályok</span>
           </Box>
 
         <Box display={{ base: 'block', md: 'none' }}>

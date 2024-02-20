@@ -1,34 +1,39 @@
+import { ChakraProvider, extendTheme } from '@chakra-ui/react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Header from './Header/Header';
+import Map from './GraveyardMap/Map';
+import Information from './Information/Information';
+import NotFound from './NotFound/NotFound';
+import Home from './Home/Home';
+import GraveList from './GraveList/GraveList';
 
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
-
-// Chakra UI
-import { ChakraProvider } from '@chakra-ui/react'
+const theme = extendTheme({
+  styles: {
+    global: {
+      body: {
+        bg: 'gray.200',
+      },
+    },
+  },
+});
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <ChakraProvider>
-      <div>
-        
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
+    <ChakraProvider theme={theme}>
+      <Router>
+        <Header />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/harta" element={<Map />} />
+          <Route path="/informatii" element={<Information />} />
+          <Route path="lista_inmormantati" element={<GraveList />}></Route>
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+
+
+      </Router>
     </ChakraProvider>
-  )
+  );
 }
 
-export default App
+export default App;

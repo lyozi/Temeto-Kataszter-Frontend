@@ -1,10 +1,14 @@
-import React from 'react';
+import { Flex } from '@chakra-ui/react';
+import GraveYardCard from './GraveYardCard';
+import balyok from '../Pictures/balyok.png';
 
-const Home: React.FC = () => {
+
+
+const Home = () => {
   return (
-    <div>
-      <h1>Home</h1>
-    </div>
+    <Flex>
+      <GraveYardCard settlement="Bályok" graveyardName="" image={balyok} />
+    </Flex>
   );
 };
 

@@ -6,6 +6,7 @@ import Information from './Information/Information';
 import NotFound from './NotFound/NotFound';
 import Home from './Home/Home';
 import GraveList from './GraveList/GraveList';
+import { QueryClient, QueryClientProvider } from "react-query";
 
 const theme = extendTheme({
   styles: {
@@ -17,23 +18,28 @@ const theme = extendTheme({
   },
 });
 
+const queryClient = new QueryClient();
+
 function App() {
   return (
-    <ChakraProvider theme={theme}>
-      <Router>
-        <Header />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/harta" element={<Map />} />
-          <Route path="/informatii" element={<Information />} />
-          <Route path="lista_inmormantati" element={<GraveList />}></Route>
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+    <QueryClientProvider client={queryClient}>
+      <ChakraProvider theme={theme}>
+        <Router>
+          <Header />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/harta" element={<Map />} />
+            <Route path="/informatii" element={<Information />} />
+            <Route path="lista_inmormantati" element={<GraveList />}></Route>
+            <Route path="*" element={<NotFound />} />
+          </Routes>
 
 
-      </Router>
-    </ChakraProvider>
+        </Router>
+      </ChakraProvider>
+    </QueryClientProvider>
   );
+
 }
 
 export default App;

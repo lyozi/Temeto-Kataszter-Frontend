@@ -1,9 +1,10 @@
 import React from 'react';
+import DisplayGraves from '../Fetching/GraveFetching'; 
 
 const GraveList: React.FC = () => {
   return (
     <div>
-      <h1>GraveList</h1>
+      <DisplayGraves />
     </div>
   );
 };

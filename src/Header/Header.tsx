@@ -2,7 +2,7 @@ import { Box, Flex, IconButton, useDisclosure, Image } from '@chakra-ui/react';
 import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons';
 import HeaderDrawer from './HeaderDrawer';
 import NavButtons from './NavButtons';
-import logo2 from '../Pictures/logo2.png'; // importáld be a képet
+import logo2 from '../Pictures/logo2.png';
 
 export const buttonStyles = {
   color: "gray.200",
@@ -16,13 +16,12 @@ const Header = () => {
   return (
       <>
         <Flex align="center" justify="space-around"  bg="gray.800" color="white" w="100%">
-          {/* A Box komponensben jelenítjük meg a képet és a szöveget */}
           <Box display="flex" alignItems="center">
             <Image 
-            boxSize='10%'
+            boxSize='12%'
             src={logo2}
             />
-            <span style={{ fontFamily: 'Arial', fontSize: '45px' }}>Bályok</span>
+            <span style={{ fontFamily: 'Arial', fontSize: '45px' }}>Temetőkataszter</span>
           </Box>
 
         <Box display={{ base: 'block', md: 'none' }}>

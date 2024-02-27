@@ -1,8 +1,10 @@
-import React, { useState } from "react";
-import { Flex, Button, useToast } from "@chakra-ui/react";
-import { useQuery, useMutation, useQueryClient } from "react-query";
-import GraveCard from "./GraveCard";
-import axios from "axios";
+import React from 'react';
+import { Flex, Wrap, useToast } from '@chakra-ui/react';
+import { useQuery, useMutation, useQueryClient } from 'react-query';
+import balyok from '../Pictures/balyok.png';
+import GraveCard from '../GraveList/GraveCard';
+import axios from 'axios';
+import GraveAddForm from './GraveAddForm';
 
 export interface Grave {
   id: number;
@@ -13,50 +15,42 @@ export interface Grave {
 }
 
 const retrieveGraves = async (): Promise<Grave[]> => {
-  const response = await axios.get<Grave[]>("https://localhost:7191/api/Graves");
+  const response = await axios.get<Grave[]>('https://localhost:7191/api/Graves');
   return response.data;
 };
 
 const postGrave = async (newGrave: Partial<Grave>) => {
-  const response = await axios.post<Grave>("https://localhost:7191/api/Graves", newGrave);
+  const response = await axios.post<Grave>('https://localhost:7191/api/Graves', newGrave);
   return response.data;
 };
 
 const DisplayGraves: React.FC = () => {
-  const { data: graves, error, isLoading } = useQuery<Grave[], Error>("gravesData", retrieveGraves);
-  const [isAdding, setIsAdding] = useState(false);
-  const [newGrave, setNewGrave] = useState<Partial<Grave>>({});
+  const { data: graves, error, isLoading } = useQuery<Grave[], Error>('gravesData', retrieveGraves);
   const queryClient = useQueryClient();
   const toast = useToast();
 
   const mutation = useMutation(postGrave, {
     onSuccess: () => {
-      queryClient.invalidateQueries("gravesData");
-      setIsAdding(false);
-      setNewGrave({});
+      queryClient.invalidateQueries('gravesData');
       toast({
-        title: "Sírhely hozzáadva",
-        status: "success",
+        title: 'Sírhely hozzáadva',
+        status: 'success',
         duration: 3000,
         isClosable: true,
       });
     },
     onError: () => {
       toast({
-        title: "Hiba történt a sírhely hozzáadása során",
-        status: "error",
+        title: 'Hiba történt a sírhely hozzáadása során',
+        status: 'error',
         duration: 3000,
         isClosable: true,
       });
     },
   });
 
-  const handleAddGrave = () => {
+  const handleAddGrave = (newGrave: Partial<Grave>) => {
     mutation.mutate(newGrave);
-  };
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setNewGrave((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
   if (isLoading) return <div>Fetching graves...</div>;
@@ -64,35 +58,8 @@ const DisplayGraves: React.FC = () => {
 
   return (
     <Flex flexDirection="column">
-      <Button onClick={() => setIsAdding(true)}>Add Grave</Button>
-      {isAdding && (
-        <Flex flexDirection="column">
-          <input
-            type="number"
-            name="row"
-            placeholder="Row"
-            value={newGrave.row || ""}
-            onChange={handleChange}
-          />
-          <input
-            type="number"
-            name="number"
-            placeholder="Number"
-            value={newGrave.number || ""}
-            onChange={handleChange}
-          />
-          <input
-            type="number"
-            name="type"
-            placeholder="Type"
-            value={newGrave.type || ""}
-            onChange={handleChange}
-          />
-          <Button onClick={handleAddGrave}>Save</Button>
-        </Flex>
-      )}
-
-      <Flex>
+      {/* <GraveAddForm onSubmit={handleAddGrave} />*/}
+      <Wrap spacing="20px">
         {graves &&
           graves.map((grave) => (
             <GraveCard
@@ -101,10 +68,10 @@ const DisplayGraves: React.FC = () => {
               row={grave.row}
               number={grave.number}
               type={grave.type}
-              image={grave.image}
+              image={balyok}
             />
           ))}
-      </Flex>
+      </Wrap>
     </Flex>
   );
 };

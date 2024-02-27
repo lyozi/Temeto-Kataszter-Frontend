@@ -1,4 +1,4 @@
-import { Box, Flex, IconButton, useDisclosure, Image } from '@chakra-ui/react';
+import { Box, Flex, Text, IconButton, useDisclosure, Image, Wrap } from '@chakra-ui/react';
 import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons';
 import HeaderDrawer from './HeaderDrawer';
 import NavButtons from './NavButtons';
@@ -15,13 +15,13 @@ const Header = () => {
 
   return (
       <>
-        <Flex align="center" justify="space-around"  bg="gray.800" color="white" w="100%">
-          <Box display="flex" alignItems="center">
+        <Wrap align="center" justify="space-around"  bg="gray.800" color="white" w="100%">
+          <Box display="flex" alignItems="center" w="30%">
             <Image 
             boxSize='12%'
             src={logo2}
             />
-            <span style={{ fontFamily: 'Arial', fontSize: '45px' }}>Temetőkataszter</span>
+            <Text style={{ fontFamily: 'Arial', fontSize: '45px' }}>Temetőkataszter</Text>
           </Box>
 
         <Box display={{ base: 'block', md: 'none' }}>
@@ -35,7 +35,7 @@ const Header = () => {
         <Box color="white" display={{ base: 'none', md: 'flex' }} width={{ base: 'full', md: 'auto' }} alignItems="center">
           <NavButtons onClose={onClose}/>
         </Box>
-      </Flex>
+      </Wrap>
 
       <HeaderDrawer isOpen={isOpen} onClose={onClose}/>
     </>

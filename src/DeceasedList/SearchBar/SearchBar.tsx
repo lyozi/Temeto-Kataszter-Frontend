@@ -32,9 +32,13 @@ const SearchBar: React.FC<Props> = ({ onNameFilter, onBirthYearFilter, onDecease
       return; 
     }
     const parsedValue = parseInt(inputValue);
-    if (parsedValue >= 0 && parsedValue < 99999 || inputValue==""){
+    if (parsedValue >= 0 && parsedValue < 99999){
       setBirthYearFilter(inputValue);
       onBirthYearFilter(parsedValue);
+    }
+    else if(inputValue==""){
+      setBirthYearFilter("");
+      onBirthYearFilter(minBirthYear);
     }
   };
 
@@ -45,9 +49,13 @@ const SearchBar: React.FC<Props> = ({ onNameFilter, onBirthYearFilter, onDecease
       return;
     }
     const parsedValue = parseInt(inputValue);
-    if (parsedValue >= 0 && parsedValue < 99999 || inputValue==""){
+    if (parsedValue >= 0 && parsedValue < 99999){
       setDeceaseYearFilter(inputValue);
       onDeceaseYearFilter(parsedValue);
+    }
+    else if(inputValue==""){
+      setDeceaseYearFilter("");
+      onDeceaseYearFilter(maxDeceaseYear);
     }
   };
 
@@ -68,6 +76,9 @@ const SearchBar: React.FC<Props> = ({ onNameFilter, onBirthYearFilter, onDecease
       }
     }
   };
+
+  const maxDeceaseYear = 99999;
+  const minBirthYear = 0;
 
   const bgcolor = 'gray.600';
   const outlineColor = 'gray.800';

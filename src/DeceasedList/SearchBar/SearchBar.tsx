@@ -108,9 +108,12 @@ const SearchBar: React.FC<Props> = ({ onNameFilter, onBirthYearFilter, onDecease
     fontSize: { base: "sm", md: "2xl" },
     size: { base: "sm", md: "lg" },
     marginLeft: 'auto'
-  }
+  };
 
-  const labelFontSize = ["sm", "3xl"];
+  const labelStyle = {
+    w: { base: "60%", md: "5ö%" },
+    fontSize : ["sm", "3xl"]
+  }
 
   const isMobile = window.innerWidth <= 768;
 
@@ -211,7 +214,7 @@ const SearchBar: React.FC<Props> = ({ onNameFilter, onBirthYearFilter, onDecease
       <Flex width="50%" p={{ base: "1%", md: "2%" }} paddingTop={{ base: "1%", md: "0.5%" }} paddingBottom={{ base: "2%", md: "1%" }} flexDirection="column">
         <Box {...cimStyle}>Szűrés:</Box>
         <Flex width="100%" flexDirection="row">
-          <Box w={{ base: "60%", md: "35%" }} fontSize={labelFontSize}>
+          <Box {...labelStyle}>
             Születés éve:
           </Box>
           <InputGroup {...rightInputGroupStyle}>
@@ -235,7 +238,7 @@ const SearchBar: React.FC<Props> = ({ onNameFilter, onBirthYearFilter, onDecease
         <Box {...cimStyle} paddingTop={secondTextsPaddingTop} />
 
         <Flex width="100%" flexDirection="row">
-          <Box w={{ base: "60%", md: "35%" }} fontSize={labelFontSize}>
+          <Box {...labelStyle}>
             Elhalálozás éve:
           </Box>
           <InputGroup {...rightInputGroupStyle}>

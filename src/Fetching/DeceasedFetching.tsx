@@ -41,8 +41,7 @@ const DeceasedFetching: React.FC<FetchingProps> = ({ searchParams }) => {
   if (error) return <div>An error occurred: {error.message}</div>;
 
   return (
-    <Flex flexDirection="column">
-      <Wrap spacing="20px">
+    <Flex flexDirection="row" flexWrap="wrap">
         {deceaseds &&
           deceaseds.map((deceased) => (
             <DeceasedCard
@@ -53,7 +52,6 @@ const DeceasedFetching: React.FC<FetchingProps> = ({ searchParams }) => {
               dateOfBirth={new Date(deceased.dateOfBirth)}
             />
           ))}
-      </Wrap>
     </Flex>
   );
 };

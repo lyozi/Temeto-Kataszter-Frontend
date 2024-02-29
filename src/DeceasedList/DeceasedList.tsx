@@ -41,7 +41,7 @@ const DeceasedList: React.FC = () => {
   };
 
   return (
-    <Box p={["0.1%", "1%"]} paddingTop="1%">
+    <Box marginBottom="1%" marginTop="1%" marginLeft="0" marginRight="1%">
       <Box display="flex" justifyContent="center" width="100%" alignContent="center">
       <Box width={{ base: "100%", md: "66%" }}>
         <SearchBar

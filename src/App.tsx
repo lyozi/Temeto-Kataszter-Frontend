@@ -5,7 +5,7 @@ import Map from './GraveyardMap/Map';
 import Information from './Information/Information';
 import NotFound from './NotFound/NotFound';
 import Home from './Home/Home';
-import GraveList from './GraveList/GraveList';
+import DeceasedList from './DeceasedList/DeceasedList';
 import { QueryClient, QueryClientProvider } from "react-query";
 
 const theme = extendTheme({
@@ -30,7 +30,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/harta" element={<Map />} />
             <Route path="/informatii" element={<Information />} />
-            <Route path="lista_inmormantati" element={<GraveList />}></Route>
+            <Route path="lista_inmormantati" element={<DeceasedList />}></Route>
             <Route path="*" element={<NotFound />} />
           </Routes>
 

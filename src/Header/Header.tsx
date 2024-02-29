@@ -14,15 +14,16 @@ const Header = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
-      <>
-        <Wrap align="center" justify="space-around"  bg="gray.800" color="white" w="100%">
-          <Box display="flex" alignItems="center" w="30%">
-            <Image 
-            boxSize='12%'
+    <>
+      <Wrap align="center" justify={{ base:"space-between" , md:"space-around"}} bg="gray.800" color="white" w="100%" p="1%">
+        <Box display="flex" alignItems="center" w="30%">
+          <Image
+            boxSize={{ base: "40%", md: '12%' }}
             src={logo2}
-            />
-            <Text style={{ fontFamily: 'Arial', fontSize: '45px' }}>Temetőkataszter</Text>
-          </Box>
+          />
+          <Text style={{fontFamily: 'Arial'}}
+          fontSize={{ base: "140%", md: "250%" }}>Temetőkataszter</Text>
+        </Box>
 
         <Box display={{ base: 'block', md: 'none' }}>
           <IconButton
@@ -33,11 +34,11 @@ const Header = () => {
         </Box>
 
         <Box color="white" display={{ base: 'none', md: 'flex' }} width={{ base: 'full', md: 'auto' }} alignItems="center">
-          <NavButtons onClose={onClose}/>
+          <NavButtons onClose={onClose} />
         </Box>
       </Wrap>
 
-      <HeaderDrawer isOpen={isOpen} onClose={onClose}/>
+      <HeaderDrawer isOpen={isOpen} onClose={onClose} />
     </>
   );
 };

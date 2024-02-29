@@ -2,7 +2,7 @@ import React from 'react';
 import { Flex, Wrap, useToast } from '@chakra-ui/react';
 import { useQuery, useMutation, useQueryClient } from 'react-query';
 import balyok from '../Pictures/balyok.png';
-import GraveCard from '../GraveList/GraveCard';
+import GraveCard from '../DeceasedList/GraveCard';
 import axios from 'axios';
 import GraveAddForm from './GraveAddForm';
 

@@ -14,8 +14,8 @@ interface Props {
 
 const SearchBar: React.FC<Props> = ({ onNameFilter, onBirthYearFilter, onDeceaseYearFilter, onSort }) => {
   const [nameFilter, setNameFilter] = useState<string>("");
-  //const [birthYearFilter, setBirthYearFilter] = useState<number>(0);
-  const [deceaseYearFilter, setDeceaseYearFilter] = useState<number>(9999);
+  const [birthYearFilter, setBirthYearFilter] = useState<string>("");
+  const [deceaseYearFilter, setDeceaseYearFilter] = useState<string>("");
   const [sortOption, setSortOption] = useState<string>("name");
   const [sortDirection, setSortDirection] = useState<string>("asc")
 
@@ -28,11 +28,14 @@ const SearchBar: React.FC<Props> = ({ onNameFilter, onBirthYearFilter, onDecease
     const regex = /^[0-9]*$/;
     const inputValue = e.target.value;
     if (!regex.test(inputValue)) {
-      return;
+      console.log("nem regex");
+      return; 
     }
     const parsedValue = parseInt(inputValue);
-    if(parsedValue>=0)
-    onBirthYearFilter(parsedValue);
+    if (parsedValue >= 0 && parsedValue < 99999 || inputValue==""){
+      setBirthYearFilter(inputValue);
+      onBirthYearFilter(parsedValue);
+    }
   };
 
   const handleDeceaseYearFilter = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -42,8 +45,10 @@ const SearchBar: React.FC<Props> = ({ onNameFilter, onBirthYearFilter, onDecease
       return;
     }
     const parsedValue = parseInt(inputValue);
-    if(parsedValue<9999)
+    if (parsedValue >= 0 && parsedValue < 99999 || inputValue==""){
+      setDeceaseYearFilter(inputValue);
       onDeceaseYearFilter(parsedValue);
+    }
   };
 
   const handleSort = (by: string, dir: string) => {
@@ -88,7 +93,7 @@ const SearchBar: React.FC<Props> = ({ onNameFilter, onBirthYearFilter, onDecease
 
 
   const rightInputGroupStyle = {
-    w: { base: "35%", md: "60%" },
+    w: { base: "35%", md: "50%" },
     fontSize: { base: "sm", md: "2xl" },
     size: { base: "sm", md: "lg" },
     marginLeft: 'auto'
@@ -195,43 +200,49 @@ const SearchBar: React.FC<Props> = ({ onNameFilter, onBirthYearFilter, onDecease
       <Flex width="50%" p={{ base: "1%", md: "2%" }} paddingTop={{ base: "1%", md: "0.5%" }} paddingBottom={{ base: "2%", md: "1%" }} flexDirection="column">
         <Box {...cimStyle}>Szűrés:</Box>
         <Flex width="100%" flexDirection="row">
-          <Box  w={{ base: "60%", md: "35%" }}  fontSize={labelFontSize}>
+          <Box w={{ base: "60%", md: "35%" }} fontSize={labelFontSize}>
             Születés éve:
           </Box>
-          <NumberInput {...rightInputGroupStyle}>
-            <NumberInputField
+          <InputGroup {...rightInputGroupStyle}>
+            <Input
+              value={birthYearFilter}
               background={bgcolor}
               color={textColor}
               _placeholder={{ color: textColor }}
+              variant='outline'
+              focusBorderColor={focusColor}
               outlineColor={outlineColor}
               fontSize={rightInputGroupStyle.fontSize}
               onChange={handleBirthYearFilter}
             />
-          </NumberInput>
-          <Box w="12%" ml="3%" display={{ base: "none", md: "block" }} fontSize={rightInputGroupStyle.fontSize}>
-            (után)
-          </Box>
+            <InputRightAddon display={{ base: "none", md: "block" }}>
+              <Box fontSize={rightInputGroupStyle.fontSize}>(után)</Box>
+            </InputRightAddon>
+          </InputGroup>
         </Flex>
 
         <Box {...cimStyle} paddingTop={secondTextsPaddingTop} />
 
         <Flex width="100%" flexDirection="row">
-          <Box w={{ base: "6%", md: "40%" }} fontSize={labelFontSize}>
+          <Box w={{ base: "60%", md: "35%" }} fontSize={labelFontSize}>
             Elhalálozás éve:
           </Box>
-          <NumberInput {...rightInputGroupStyle}>
-            <NumberInputField
+          <InputGroup {...rightInputGroupStyle}>
+            <Input
+              value={deceaseYearFilter}
               background={bgcolor}
               color={textColor}
               _placeholder={{ color: textColor }}
+              variant='outline'
+              focusBorderColor={focusColor}
               outlineColor={outlineColor}
               fontSize={rightInputGroupStyle.fontSize}
               onChange={handleDeceaseYearFilter}
             />
-          </NumberInput>
-          <Box w="12%" ml="3%" display={{ base: "none", md: "block" }} fontSize={rightInputGroupStyle.fontSize} >
-            (előtt)
-          </Box>
+            <InputRightAddon display={{ base: "none", md: "block" }}>
+              <Box fontSize={rightInputGroupStyle.fontSize} >(előtt)</Box>
+            </InputRightAddon>
+          </InputGroup>
         </Flex>
       </Flex>
     </Box>

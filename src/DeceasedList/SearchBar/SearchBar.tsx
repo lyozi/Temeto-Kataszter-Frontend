@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import {
   Flex, Input, Select, Box, InputGroup, InputLeftElement, InputRightAddon, RadioGroup, Radio
-  , useRadio, useRadioGroup, HStack, Button, NumberInput, NumberInputField
+  , useRadio, useRadioGroup, HStack, Button, NumberInput, NumberInputField, Text, Center, Hide, Show
 } from "@chakra-ui/react";
 import { Search2Icon } from "@chakra-ui/icons";
 
@@ -10,9 +10,10 @@ interface Props {
   onBirthYearFilter: (year: number) => void;
   onDeceaseYearFilter: (year: number) => void;
   onSort: (sortBy: string) => void;
+  isDeceasedMessagesSelected: boolean;
 }
 
-const SearchBar: React.FC<Props> = ({ onNameFilter, onBirthYearFilter, onDeceaseYearFilter, onSort }) => {
+const SearchBar: React.FC<Props> = ({ onNameFilter, onBirthYearFilter, onDeceaseYearFilter, onSort, isDeceasedMessagesSelected }) => {
   const [nameFilter, setNameFilter] = useState<string>("");
   const [birthYearFilter, setBirthYearFilter] = useState<string>("");
   const [deceaseYearFilter, setDeceaseYearFilter] = useState<string>("");
@@ -29,14 +30,14 @@ const SearchBar: React.FC<Props> = ({ onNameFilter, onBirthYearFilter, onDecease
     const inputValue = e.target.value;
     if (!regex.test(inputValue)) {
       console.log("nem regex");
-      return; 
+      return;
     }
     const parsedValue = parseInt(inputValue);
-    if (parsedValue >= 0 && parsedValue < 99999){
+    if (parsedValue >= 0 && parsedValue < 99999) {
       setBirthYearFilter(inputValue);
       onBirthYearFilter(parsedValue);
     }
-    else if(inputValue==""){
+    else if (inputValue == "") {
       setBirthYearFilter("");
       onBirthYearFilter(minBirthYear);
     }
@@ -49,11 +50,11 @@ const SearchBar: React.FC<Props> = ({ onNameFilter, onBirthYearFilter, onDecease
       return;
     }
     const parsedValue = parseInt(inputValue);
-    if (parsedValue >= 0 && parsedValue < 99999){
+    if (parsedValue >= 0 && parsedValue < 99999) {
       setDeceaseYearFilter(inputValue);
       onDeceaseYearFilter(parsedValue);
     }
-    else if(inputValue==""){
+    else if (inputValue == "") {
       setDeceaseYearFilter("");
       onDeceaseYearFilter(maxDeceaseYear);
     }
@@ -85,6 +86,7 @@ const SearchBar: React.FC<Props> = ({ onNameFilter, onBirthYearFilter, onDecease
   const focusColor = "#234150";
   const textColor = 'gray.200';
   const secondTextsPaddingTop = "1%";
+  const secondTextsPaddingBottom = "11%";
 
   const cimStyle = {
     fontSize: ["2xl", "4xl"], // Első elem a mobil nézet, második elem a desktop nézet
@@ -99,34 +101,35 @@ const SearchBar: React.FC<Props> = ({ onNameFilter, onBirthYearFilter, onDecease
     borderColor: "black",
     borderRadius: 'md',
     boxShadow: 'md',
-    size: { base: "sm", md: "lg" }
+    size: { base: "sm", md: isDeceasedMessagesSelected ? "sm" : "lg" }
   };
 
 
   const rightInputGroupStyle = {
-    w: { base: "35%", md: "50%" },
-    fontSize: { base: "sm", md: "2xl" },
-    size: { base: "sm", md: "lg" },
+    w: { base: "35%", md: isDeceasedMessagesSelected ? "35%" : "50%" },
+    fontSize: { base: "sm", md: isDeceasedMessagesSelected ? "sm" : "xl" },
+    size: { base: "sm", md: isDeceasedMessagesSelected ? "sm" : "lg" },
     marginLeft: 'auto'
   };
 
   const labelStyle = {
-    w: { base: "60%", md: "5ö%" },
-    fontSize : ["sm", "3xl"]
+    w: { base: "60%", md: isDeceasedMessagesSelected ? "60%" : "50%" },
+    fontSize: ["sm", "2xl"]
   }
 
   const isMobile = window.innerWidth <= 768;
 
   return (
-    <Box display="flex" flexDirection="row" flexWrap="wrap" justifyContent="space-between" bg="gray.400" borderWidth='4px' borderColor={outlineColor} borderRadius='xl'>
-      <Flex width="50%" flexDirection="column" p={{ base: "1%", md: "2%" }} paddingTop={{ base: "1%", md: "0.5%" }} paddingBottom={{ base: "2%", md: "1%" }}>
+    <Box display="flex" flexDirection="row" flexWrap="wrap" justifyContent="space-between" bg="gray.400" borderWidth='4px' borderColor={outlineColor} borderRadius='xl'
+      width={{ base: "100%", md: isDeceasedMessagesSelected ? "100%" : "66%" }}>
+      <Flex width="50%" flexDirection="column" p={{ base: "1%", md: isDeceasedMessagesSelected ? "1%" : "2%" }} paddingTop={{ base: "1%", md: isDeceasedMessagesSelected ? "1%" : "0.5%" }} paddingBottom={{ base: "2%", md: isDeceasedMessagesSelected ? "2%" : "1%" }}>
         <Box width="100%">
           <Box {...cimStyle}>Keresés:</Box>
           <InputGroup width="100%" alignContent='center'
-            fontSize={{ base: "sm", md: "lg" }}
-            size={{ base: "sm", md: "lg" }} >
+            fontSize={{ base: "sm", md: isDeceasedMessagesSelected ? "sm" : "lg" }}
+            size={{ base: "sm", md: isDeceasedMessagesSelected ? "sm" : "lg" }} >
             <InputLeftElement pointerEvents='none'>
-              <Search2Icon color={textColor} w={{ base: "4", md: "8" }} h={{ base: "4", md: "8" }} />
+              <Search2Icon color={textColor} w={{ base: "4", md: isDeceasedMessagesSelected ? "4" : "8" }} h={{ base: "4", md: isDeceasedMessagesSelected ? "4" : "8" }} />
             </InputLeftElement>
             <Input
               placeholder="Elhunyt neve"
@@ -144,7 +147,7 @@ const SearchBar: React.FC<Props> = ({ onNameFilter, onBirthYearFilter, onDecease
         </Box>
 
         <Box width="100%">
-          <Box {...cimStyle} paddingTop={secondTextsPaddingTop}>Sorrendezés:</Box>
+          <Box {...cimStyle} paddingTop={secondTextsPaddingTop} paddingBottom={secondTextsPaddingBottom}>Sorrendezés:</Box>
           <Flex dir="horizontal" w="100%">
             <Select
               width="50%"
@@ -157,7 +160,7 @@ const SearchBar: React.FC<Props> = ({ onNameFilter, onBirthYearFilter, onDecease
               background={bgcolor}
               color='gray.200'
               fontSize={rightInputGroupStyle.fontSize}
-              size={{ base: "sm", md: "lg" }}
+              size={{ base: "sm", md: isDeceasedMessagesSelected ? "sm" : "lg" }}
             >
               <option value="name">Név</option>
               <option value="dateofdeath">Elhalálozás dátuma</option>
@@ -177,7 +180,7 @@ const SearchBar: React.FC<Props> = ({ onNameFilter, onBirthYearFilter, onDecease
                 color={sortDirection === "asc" ? "white" : "gray.800"}
                 bg={sortDirection === "asc" ? "gray.800" : "white"}
                 {...RadioButtonStyle}
-                size={{ base: "sm", md: "lg" }}
+                size={{ base: "sm", md: isDeceasedMessagesSelected ? "sm" : "lg" }}
                 _hover={{
                   bg: sortDirection === "asc" ? "gray.700" : "gray.200"
                 }}
@@ -186,7 +189,7 @@ const SearchBar: React.FC<Props> = ({ onNameFilter, onBirthYearFilter, onDecease
                 Növekvő
               </Button>
 
-              {!isMobile && (
+              <Show above={isDeceasedMessagesSelected ? "none" : "sm"}>
                 <Button
                   value="desc"
                   onClick={() => handleSort(sortOption, "desc")}
@@ -196,14 +199,13 @@ const SearchBar: React.FC<Props> = ({ onNameFilter, onBirthYearFilter, onDecease
                     bg: sortDirection === "desc" ? "gray.700" : "gray.200"
                   }}
                   {...RadioButtonStyle}
-                  size={{ base: "sm", md: "lg" }}
+                  size={{ base: "sm", md: isDeceasedMessagesSelected ? "sm" : "lg" }}
                   marginLeft="5%"
                   fontSize={rightInputGroupStyle.fontSize}
                 >
                   Csökkenő
                 </Button>
-              )}
-
+              </Show>
             </Flex>
 
           </Flex>
@@ -211,7 +213,7 @@ const SearchBar: React.FC<Props> = ({ onNameFilter, onBirthYearFilter, onDecease
       </Flex >
 
 
-      <Flex width="50%" p={{ base: "1%", md: "2%" }} paddingTop={{ base: "1%", md: "0.5%" }} paddingBottom={{ base: "2%", md: "1%" }} flexDirection="column">
+      <Flex width="50%" p={{ base: "1%", md: isDeceasedMessagesSelected ? "1%" : "2%" }} paddingTop={{ base: "1%", md: isDeceasedMessagesSelected ? "1%" : "0.5%" }} paddingBottom={{ base: "2%", md: isDeceasedMessagesSelected ? "2%" : "1%" }} flexDirection="column">
         <Box {...cimStyle}>Szűrés:</Box>
         <Flex width="100%" flexDirection="row">
           <Box {...labelStyle}>
@@ -229,13 +231,13 @@ const SearchBar: React.FC<Props> = ({ onNameFilter, onBirthYearFilter, onDecease
               fontSize={rightInputGroupStyle.fontSize}
               onChange={handleBirthYearFilter}
             />
-            <InputRightAddon display={{ base: "none", md: "block" }}>
-              <Box fontSize={rightInputGroupStyle.fontSize}>(után)</Box>
+            <InputRightAddon display={{ base: "none", md: isDeceasedMessagesSelected ? "none" : "flex" }} alignItems="center" fontSize={rightInputGroupStyle.fontSize}>
+              (után)
             </InputRightAddon>
           </InputGroup>
         </Flex>
 
-        <Box {...cimStyle} paddingTop={secondTextsPaddingTop} />
+        <Box {...cimStyle} paddingTop={secondTextsPaddingTop} paddingBottom={secondTextsPaddingBottom} />
 
         <Flex width="100%" flexDirection="row">
           <Box {...labelStyle}>
@@ -253,13 +255,13 @@ const SearchBar: React.FC<Props> = ({ onNameFilter, onBirthYearFilter, onDecease
               fontSize={rightInputGroupStyle.fontSize}
               onChange={handleDeceaseYearFilter}
             />
-            <InputRightAddon display={{ base: "none", md: "block" }}>
-              <Box fontSize={rightInputGroupStyle.fontSize} >(előtt)</Box>
+            <InputRightAddon display={{ base: "none", md: isDeceasedMessagesSelected ? "none" : "flex" }} alignItems="center" fontSize={rightInputGroupStyle.fontSize}>
+              (előtt)
             </InputRightAddon>
           </InputGroup>
         </Flex>
       </Flex>
-    </Box>
+    </Box >
   );
 };
 

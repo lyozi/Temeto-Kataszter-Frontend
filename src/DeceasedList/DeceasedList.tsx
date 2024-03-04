@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
-import { Box } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
 import DeceasedFetching from '../Fetching/DeceasedFetching';
 import SearchBar from './SearchBar/SearchBar';
+import DeceasedMessages from './DeceasedMessages';
 
 const DeceasedList: React.FC = () => {
   const [nameFilter, setNameFilter] = useState<string>("");
   const [birthYearAfterFilter, setBirthYearAfterFilter] = useState<number>(0);
-  const [birthYearBeforeFilter, setBirthYearBeforeFilter] = useState<number>(9999);
+  const [deceaseYearBeforeFilter, setDeceaseYearBeforeFilter] = useState<number>(9999);
   const [orderBy, setOrderBy] = useState<string>("name-asc");
+  const [isDeceasedMessagesSelected, setIsDeceasedMessagesSelected] = useState<boolean>(false);
 
   const handleNameFilter = (query: string) => {
     console.log("Search query:", query);
@@ -19,7 +21,7 @@ const DeceasedList: React.FC = () => {
     if (!isNaN(year)) {
       setBirthYearAfterFilter(year);
     }
-    else{
+    else {
       setBirthYearAfterFilter(9999);
     }
   };
@@ -28,10 +30,10 @@ const DeceasedList: React.FC = () => {
     console.log("Filter:", year);
     const parsedYear = year;
     if (!isNaN(parsedYear)) {
-      setBirthYearBeforeFilter(parsedYear);
+      setDeceaseYearBeforeFilter(parsedYear);
     }
-    else{
-      setBirthYearAfterFilter(0);
+    else {
+      setDeceaseYearBeforeFilter(0);
     }
   };
 
@@ -40,26 +42,43 @@ const DeceasedList: React.FC = () => {
     setOrderBy(sortBy);
   };
 
+  const handleDeceasedMessagesSelected = (deceasedId?: number) => {
+    setIsDeceasedMessagesSelected(true);
+    console.log("Selected id:", deceasedId);
+  };
+
   return (
-    <Box marginBottom="1%" marginTop="1%" marginLeft="0" marginRight="1%">
-      <Box display="flex" justifyContent="center" width="100%" alignContent="center">
-      <Box width={{ base: "100%", md: "66%" }}>
-        <SearchBar
-          onNameFilter={handleNameFilter}
-          onBirthYearFilter={handleBirthYearFilter}
-          onDeceaseYearFilter={handleDeceaseYearFilter}
-          onSort={handleSort}
-        />
-      </Box>
-      </Box>
-      <DeceasedFetching
-        searchParams={{
-          name: nameFilter,
-          birthYearAfter: birthYearAfterFilter,
-          birthYearBefore: birthYearBeforeFilter,
-          orderBy: orderBy
-        }}
-      />
+    <Box marginBottom="1%" marginTop="1%" marginLeft="0">
+      <Flex direction="row">
+        <Flex
+          display={{
+            base: isDeceasedMessagesSelected ? "none" : "flex",
+            md: "flex"
+          }}
+          direction="column"
+          alignItems="center"
+          width={isDeceasedMessagesSelected ? "25%" : "100%"}
+        >
+          <SearchBar
+            onNameFilter={handleNameFilter}
+            onBirthYearFilter={handleBirthYearFilter}
+            onDeceaseYearFilter={handleDeceaseYearFilter}
+            onSort={handleSort}
+            isDeceasedMessagesSelected={isDeceasedMessagesSelected}
+          />
+
+          <DeceasedFetching
+            searchParams={{
+              name: nameFilter,
+              birthYearAfter: birthYearAfterFilter,
+              deceaseYearBefore: deceaseYearBeforeFilter,
+              orderBy: orderBy
+            }}
+            handleDeceasedMessagesSelected={handleDeceasedMessagesSelected}
+          />
+        </Flex>
+        <DeceasedMessages />
+      </Flex >
     </Box >
   );
 };

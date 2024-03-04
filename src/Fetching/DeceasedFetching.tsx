@@ -15,23 +15,24 @@ interface FetchingProps {
   searchParams?: {
     name?: string;
     birthYearAfter?: number;
-    birthYearBefore?: number;
+    deceaseYearBefore?: number;
     orderBy?: string;
   };
+  handleDeceasedMessagesSelected: (id: number) => void;
 }
 
 const retrieveDeceased = async (searchParams?: FetchingProps['searchParams']): Promise<Deceased[]> => {
   let url = 'https://localhost:7191/api/Deceased/Search';
   if (searchParams) {
-    const { name, birthYearAfter, birthYearBefore, orderBy } = searchParams;
-    url += `?name=${name}&birthYearAfter=${birthYearAfter}&birthYearBefore=${birthYearBefore}&orderBy=${orderBy}`;
+    const { name, birthYearAfter, deceaseYearBefore, orderBy } = searchParams;
+    url += `?name=${name}&birthYearAfter=${birthYearAfter}&deceaseYearBefore=${deceaseYearBefore}&orderBy=${orderBy}`;
   }
 
   const response = await axios.get<Deceased[]>(url);
   return response.data;
 };
 
-const DeceasedFetching: React.FC<FetchingProps> = ({ searchParams }) => {
+const DeceasedFetching: React.FC<FetchingProps> = ({ searchParams, handleDeceasedMessagesSelected }) => {
   const { data: deceaseds, error, isLoading } = useQuery<Deceased[], Error>(
     ['deceasedsData', searchParams],
     () => retrieveDeceased(searchParams),
@@ -50,6 +51,7 @@ const DeceasedFetching: React.FC<FetchingProps> = ({ searchParams }) => {
               name={deceased.name}
               dateOfDeath={new Date(deceased.dateOfDeath)}
               dateOfBirth={new Date(deceased.dateOfBirth)}
+              handleDeceasedMessagesSelected={handleDeceasedMessagesSelected}
             />
           ))}
     </Flex>

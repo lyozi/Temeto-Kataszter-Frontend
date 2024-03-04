@@ -8,7 +8,10 @@ interface NavButtonsProps {
 
 const buttonStyles = {
   color: "gray.200",
-  fontSize: "20px",
+  fontSize: "30px",
+  size: "lg",
+  height: '45px',
+  mr: '10px',
   variant: "ghost",
   _hover: { bg: 'gray.600', color: "white" },
   _active: { bg: 'gray.600' }

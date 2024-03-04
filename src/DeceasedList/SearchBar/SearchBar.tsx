@@ -189,23 +189,28 @@ const SearchBar: React.FC<Props> = ({ onNameFilter, onBirthYearFilter, onDecease
                 Növekvő
               </Button>
 
-              <Show above={isDeceasedMessagesSelected ? "none" : "sm"}>
-                <Button
-                  value="desc"
-                  onClick={() => handleSort(sortOption, "desc")}
-                  color={sortDirection === "desc" ? "white" : "gray.800"}
-                  bg={sortDirection === "desc" ? "gray.800" : "white"}
-                  _hover={{
-                    bg: sortDirection === "desc" ? "gray.700" : "gray.200"
-                  }}
-                  {...RadioButtonStyle}
-                  size={{ base: "sm", md: isDeceasedMessagesSelected ? "sm" : "lg" }}
-                  marginLeft="5%"
-                  fontSize={rightInputGroupStyle.fontSize}
-                >
-                  Csökkenő
-                </Button>
-              </Show>
+              {
+                !isDeceasedMessagesSelected &&
+                (
+                  <Show breakpoint='(min-width: 768px)'>
+                    <Button
+                      value="desc"
+                      onClick={() => handleSort(sortOption, "desc")}
+                      color={sortDirection === "desc" ? "white" : "gray.800"}
+                      bg={sortDirection === "desc" ? "gray.800" : "white"}
+                      _hover={{
+                        bg: sortDirection === "desc" ? "gray.700" : "gray.200"
+                      }}
+                      {...RadioButtonStyle}
+                      size={{ base: "sm", md: isDeceasedMessagesSelected ? "sm" : "lg" }}
+                      marginLeft="5%"
+                      fontSize={rightInputGroupStyle.fontSize}
+                    >
+                      Csökkenő
+                    </Button>
+                  </Show>
+                )
+              }
             </Flex>
 
           </Flex>

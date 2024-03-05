@@ -57,7 +57,7 @@ const DeceasedList: React.FC = () => {
           }}
           direction="column"
           alignItems="center"
-          width={isDeceasedMessagesSelected ? "25%" : "100%"}
+          width={isDeceasedMessagesSelected ? "27%" : "100%"}
         >
           <SearchBar
             onNameFilter={handleNameFilter}
@@ -75,6 +75,7 @@ const DeceasedList: React.FC = () => {
               orderBy: orderBy
             }}
             handleDeceasedMessagesSelected={handleDeceasedMessagesSelected}
+            isDeceasedMessagesSelected={isDeceasedMessagesSelected}
           />
         </Flex>
         <DeceasedMessages />

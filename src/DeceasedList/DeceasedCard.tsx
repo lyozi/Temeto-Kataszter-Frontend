@@ -15,6 +15,7 @@ interface DeceasedCardProps {
   dateOfDeath: Date;
   dateOfBirth: Date;
   handleDeceasedMessagesSelected: (id: number) => void;
+  isDeceasedMessagesSelected: boolean;
 }
 
 const getRandomImage = () => {
@@ -23,7 +24,7 @@ const getRandomImage = () => {
   return images[randomIndex];
 };
 
-const DeceasedCard: React.FC<DeceasedCardProps> = ({ id, name, dateOfDeath, dateOfBirth, handleDeceasedMessagesSelected }) => {
+const DeceasedCard: React.FC<DeceasedCardProps> = ({ id, name, dateOfDeath, dateOfBirth, handleDeceasedMessagesSelected, isDeceasedMessagesSelected }) => {
   const randomImage = getRandomImage();
   
   const handleClickDeceasedMessagesSelected: MouseEventHandler<HTMLDivElement> = (event) => {
@@ -34,7 +35,7 @@ const DeceasedCard: React.FC<DeceasedCardProps> = ({ id, name, dateOfDeath, date
     <Box
       ml="1%"
       mt='1.5%'
-      w={{ base: "48.5%", md: "24%" }}
+      w={{ base: "48.5%", md: isDeceasedMessagesSelected? "48.5" : "24%" }}
       h="400px"
       borderWidth='3px'
       borderRadius='lg'

@@ -19,6 +19,7 @@ interface FetchingProps {
     orderBy?: string;
   };
   handleDeceasedMessagesSelected: (id: number) => void;
+  isDeceasedMessagesSelected: boolean;
 }
 
 const retrieveDeceased = async (searchParams?: FetchingProps['searchParams']): Promise<Deceased[]> => {
@@ -32,7 +33,7 @@ const retrieveDeceased = async (searchParams?: FetchingProps['searchParams']): P
   return response.data;
 };
 
-const DeceasedFetching: React.FC<FetchingProps> = ({ searchParams, handleDeceasedMessagesSelected }) => {
+const DeceasedFetching: React.FC<FetchingProps> = ({ searchParams, handleDeceasedMessagesSelected, isDeceasedMessagesSelected }) => {
   const { data: deceaseds, error, isLoading } = useQuery<Deceased[], Error>(
     ['deceasedsData', searchParams],
     () => retrieveDeceased(searchParams),
@@ -52,6 +53,7 @@ const DeceasedFetching: React.FC<FetchingProps> = ({ searchParams, handleDecease
               dateOfDeath={new Date(deceased.dateOfDeath)}
               dateOfBirth={new Date(deceased.dateOfBirth)}
               handleDeceasedMessagesSelected={handleDeceasedMessagesSelected}
+              isDeceasedMessagesSelected={isDeceasedMessagesSelected}
             />
           ))}
     </Flex>

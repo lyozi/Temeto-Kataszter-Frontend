@@ -89,7 +89,7 @@ const SearchBar: React.FC<Props> = ({ onNameFilter, onBirthYearFilter, onDecease
   const secondTextsPaddingBottom = "11%";
 
   const cimStyle = {
-    fontSize: ["2xl", "4xl"], // Első elem a mobil nézet, második elem a desktop nézet
+    fontSize: ["2xl", isDeceasedMessagesSelected ? "3xl" : "4xl"], // Első elem a mobil nézet, második elem a desktop nézet
     fontWeight: "bold",
     height: 50,
     paddingBottom: "10%"
@@ -114,10 +114,10 @@ const SearchBar: React.FC<Props> = ({ onNameFilter, onBirthYearFilter, onDecease
 
   const labelStyle = {
     w: { base: "60%", md: isDeceasedMessagesSelected ? "60%" : "50%" },
-    fontSize: ["sm", "2xl"]
+    fontSize: ["sm", isDeceasedMessagesSelected ? "md" : "2xl"]
   }
 
-  const isMobile = window.innerWidth <= 768;
+  const isMobile = window.innerWidth <= 768 || isDeceasedMessagesSelected;
 
   return (
     <Box display="flex" flexDirection="row" flexWrap="wrap" justifyContent="space-between" bg="gray.400" borderWidth='4px' borderColor={outlineColor} borderRadius='xl'

@@ -10,6 +10,7 @@ const DeceasedList: React.FC = () => {
   const [deceaseYearBeforeFilter, setDeceaseYearBeforeFilter] = useState<number>(9999);
   const [orderBy, setOrderBy] = useState<string>("name-asc");
   const [isDeceasedMessagesSelected, setIsDeceasedMessagesSelected] = useState<boolean>(false);
+  const [selectedDeceasedId, setSelectedDeceasedId] = useState<number>(0);
 
   const handleNameFilter = (query: string) => {
     console.log("Search query:", query);
@@ -42,43 +43,46 @@ const DeceasedList: React.FC = () => {
     setOrderBy(sortBy);
   };
 
-  const handleDeceasedMessagesSelected = (deceasedId?: number) => {
+  const handleDeceasedMessagesSelected = (deceasedId: number) => {
+    setSelectedDeceasedId(deceasedId);
     setIsDeceasedMessagesSelected(true);
     console.log("Selected id:", deceasedId);
   };
 
   return (
-    <Box marginBottom="1%" marginTop="1%" marginLeft="0">
-      <Flex direction="row">
-        <Flex
-          display={{
-            base: isDeceasedMessagesSelected ? "none" : "flex",
-            md: "flex"
-          }}
-          direction="column"
-          alignItems="center"
+    <Box paddingTop="1vh" marginLeft="0" h={{base:"94vh", md:"87.8vh"}}>
+      <Flex direction="row" h="100%">
+          <Flex
           width={isDeceasedMessagesSelected ? "27%" : "100%"}
-        >
-          <SearchBar
-            onNameFilter={handleNameFilter}
-            onBirthYearFilter={handleBirthYearFilter}
-            onDeceaseYearFilter={handleDeceaseYearFilter}
-            onSort={handleSort}
-            isDeceasedMessagesSelected={isDeceasedMessagesSelected}
-          />
-
-          <DeceasedFetching
-            searchParams={{
-              name: nameFilter,
-              birthYearAfter: birthYearAfterFilter,
-              deceaseYearBefore: deceaseYearBeforeFilter,
-              orderBy: orderBy
+            display={{
+              base: isDeceasedMessagesSelected ? "none" : "flex",
+              md: "flex"
             }}
-            handleDeceasedMessagesSelected={handleDeceasedMessagesSelected}
-            isDeceasedMessagesSelected={isDeceasedMessagesSelected}
-          />
+            direction="column"
+            alignItems="center"
+          >
+            <SearchBar
+              onNameFilter={handleNameFilter}
+              onBirthYearFilter={handleBirthYearFilter}
+              onDeceaseYearFilter={handleDeceaseYearFilter}
+              onSort={handleSort}
+              isDeceasedMessagesSelected={isDeceasedMessagesSelected}
+            />
+
+            <DeceasedFetching
+              searchParams={{
+                name: nameFilter,
+                birthYearAfter: birthYearAfterFilter,
+                deceaseYearBefore: deceaseYearBeforeFilter,
+                orderBy: orderBy
+              }}
+              handleDeceasedMessagesSelected={handleDeceasedMessagesSelected}
+              isDeceasedMessagesSelected={isDeceasedMessagesSelected}
+            />
+          </Flex>
+        <Flex direction="column" width={"73%"} display={isDeceasedMessagesSelected ? "flex" : "none"}>
+          <DeceasedMessages id={selectedDeceasedId}/>
         </Flex>
-        <DeceasedMessages />
       </Flex >
     </Box >
   );

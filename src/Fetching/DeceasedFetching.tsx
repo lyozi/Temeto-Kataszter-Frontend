@@ -43,7 +43,8 @@ const DeceasedFetching: React.FC<FetchingProps> = ({ searchParams, handleDecease
   if (error) return <div>An error occurred: {error.message}</div>;
 
   return (
-    <Flex flexDirection="row" flexWrap="wrap">
+    <Flex flexDirection="row" flexWrap="wrap" 
+    overflowY={isDeceasedMessagesSelected ? "scroll" : "visible"}>
         {deceaseds &&
           deceaseds.map((deceased) => (
             <DeceasedCard

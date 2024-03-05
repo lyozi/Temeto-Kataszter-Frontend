@@ -8,7 +8,7 @@ interface NavButtonsProps {
 
 const buttonStyles = {
   color: "gray.200",
-  fontSize: "30px",
+  fontSize: { base: "200%", md: "100%", lg:"120%", xl:"200%" },
   size: "lg",
   height: '45px',
   mr: '10px',

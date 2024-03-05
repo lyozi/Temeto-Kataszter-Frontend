@@ -1,11 +1,22 @@
 import React from "react";
 import { Flex, Box } from "@chakra-ui/react";
 
-const DeceasedMessages: React.FC = () => {
+interface DeceasedMessagesProps{
+  id: number;
+}
+
+const DeceasedMessages: React.FC<DeceasedMessagesProps> = ({id}) => {
   return (
-    <Box>
+    <Box 
+    background='gray.300' 
+    borderWidth='3px'
+    borderRadius='lg'
+    borderColor='gray.800'
+    height="100%">
       <Flex>
-        {/* Itt jöhetnek a DeceasedMessages komponens részei */}
+        <Box>
+          id = {id}
+        </Box>
       </Flex>
     </Box>
   );

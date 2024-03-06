@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
-import { Box, Flex } from '@chakra-ui/react';
-import DeceasedFetching from '../Fetching/DeceasedFetching';
+import React, { useState, useEffect, useRef } from 'react';
+import { Box, Flex, Button } from '@chakra-ui/react';
+import { ArrowDownIcon } from '@chakra-ui/icons';
+
+import DeceasedFetching, { DeceasedMessagesFetching } from '../Fetching/DeceasedFetching';
 import SearchBar from './SearchBar/SearchBar';
-import DeceasedMessages from './DeceasedMessages';
 
 const DeceasedList: React.FC = () => {
   const [nameFilter, setNameFilter] = useState<string>("");
@@ -12,79 +13,108 @@ const DeceasedList: React.FC = () => {
   const [isDeceasedMessagesSelected, setIsDeceasedMessagesSelected] = useState<boolean>(false);
   const [selectedDeceasedId, setSelectedDeceasedId] = useState<number>(0);
 
+  const messagesEndComponent = useRef<HTMLDivElement>(null);
+
+  const scrollToBottom = () => {
+    if (messagesEndComponent.current) {
+      messagesEndComponent.current.scrollIntoView({ behavior: "instant" });
+    }
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [isDeceasedMessagesSelected, selectedDeceasedId]);
+
   const handleNameFilter = (query: string) => {
-    console.log("Search query:", query);
     setNameFilter(query);
   };
 
   const handleBirthYearFilter = (year: number) => {
-    console.log("Filter:", year);
-    if (!isNaN(year)) {
-      setBirthYearAfterFilter(year);
-    }
-    else {
-      setBirthYearAfterFilter(9999);
-    }
+    setBirthYearAfterFilter(year);
   };
 
   const handleDeceaseYearFilter = (year: number) => {
-    console.log("Filter:", year);
-    const parsedYear = year;
-    if (!isNaN(parsedYear)) {
-      setDeceaseYearBeforeFilter(parsedYear);
-    }
-    else {
-      setDeceaseYearBeforeFilter(0);
-    }
+    setDeceaseYearBeforeFilter(year);
   };
 
   const handleSort = (sortBy: string) => {
-    console.log("Sort by:", sortBy);
     setOrderBy(sortBy);
   };
 
   const handleDeceasedMessagesSelected = (deceasedId: number) => {
     setSelectedDeceasedId(deceasedId);
     setIsDeceasedMessagesSelected(true);
-    console.log("Selected id:", deceasedId);
+  };
+
+  const handleScrollToBottom = () => {
+    scrollToBottom();
   };
 
   return (
-    <Box paddingTop="1vh" marginLeft="0" h={{base:"94vh", md:"87.8vh"}}>
+    <Box paddingTop="1vh" marginLeft="0" h={{ base: "94vh", md: "87.8vh" }}>
       <Flex direction="row" h="100%">
-          <Flex
+        <Flex
           width={isDeceasedMessagesSelected ? "27%" : "100%"}
-            display={{
-              base: isDeceasedMessagesSelected ? "none" : "flex",
-              md: "flex"
-            }}
-            direction="column"
-            alignItems="center"
-          >
-            <SearchBar
-              onNameFilter={handleNameFilter}
-              onBirthYearFilter={handleBirthYearFilter}
-              onDeceaseYearFilter={handleDeceaseYearFilter}
-              onSort={handleSort}
-              isDeceasedMessagesSelected={isDeceasedMessagesSelected}
-            />
+          display={{
+            base: isDeceasedMessagesSelected ? "none" : "flex",
+            md: "flex"
+          }}
+          direction="column"
+          alignItems="center"
+        >
+          <SearchBar
+            onNameFilter={handleNameFilter}
+            onBirthYearFilter={handleBirthYearFilter}
+            onDeceaseYearFilter={handleDeceaseYearFilter}
+            onSort={handleSort}
+            isDeceasedMessagesSelected={isDeceasedMessagesSelected}
+          />
 
-            <DeceasedFetching
-              searchParams={{
-                name: nameFilter,
-                birthYearAfter: birthYearAfterFilter,
-                deceaseYearBefore: deceaseYearBeforeFilter,
-                orderBy: orderBy
-              }}
-              handleDeceasedMessagesSelected={handleDeceasedMessagesSelected}
-              isDeceasedMessagesSelected={isDeceasedMessagesSelected}
-            />
-          </Flex>
-        <Flex direction="column" width={"73%"} display={isDeceasedMessagesSelected ? "flex" : "none"}>
-          <DeceasedMessages id={selectedDeceasedId}/>
+          <DeceasedFetching
+            searchParams={{
+              name: nameFilter,
+              birthYearAfter: birthYearAfterFilter,
+              deceaseYearBefore: deceaseYearBeforeFilter,
+              orderBy: orderBy
+            }}
+            handleDeceasedMessagesSelected={handleDeceasedMessagesSelected}
+            isDeceasedMessagesSelected={isDeceasedMessagesSelected}
+          />
         </Flex>
-      </Flex >
-    </Box >
+        <Flex direction="column" width={"73%"} display={isDeceasedMessagesSelected ? "flex" : "none"}>
+          <Box
+            background='gray.100'
+            borderWidth='3px'
+            borderRadius='lg'
+            borderColor='gray.800'
+            height="100%"
+            width="70%"
+            padding="2%"
+            overflowY="auto"
+          >
+            <DeceasedMessagesFetching id={selectedDeceasedId} />
+
+            <Box height="0px" ref={messagesEndComponent}></Box>
+
+          </Box>
+
+          <Button
+            onClick={handleScrollToBottom}
+            position="absolute"
+            bottom="10"
+            left="10"
+            bg="gray.800"
+            borderRadius="full"
+            aria-label="Scroll to bottom"
+            _hover={{
+              bg: "gray.600"
+            }}
+          >
+            <ArrowDownIcon boxSize="30px" color="gray.200" />
+          </Button>
+        </Flex>
+      </Flex>
+    </Box>
   );
 };
 

@@ -15,7 +15,6 @@ const MessageComponent: React.FC<MessageComponentProps> = ({ message }) => {
       borderWidth='3px'
       borderRadius='lg'
       borderColor='gray.800'
-      height="100%"
       marginTop="5%"
     >
       <Text fontWeight="bold">{author}</Text>

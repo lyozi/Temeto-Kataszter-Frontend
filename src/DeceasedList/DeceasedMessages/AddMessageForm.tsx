@@ -6,9 +6,10 @@ import axios from 'axios';
 
 interface AddMessageFormProps {
   id: number;
+  notifyMessageAdded: (message: Message) => void;
 }
 
-const AddMessageForm: React.FC<AddMessageFormProps> = ({ id }) => {
+const AddMessageForm: React.FC<AddMessageFormProps> = ({ id, notifyMessageAdded }) => {
   const [author, setAuthor] = useState<string>('');
   const [text, setText] = useState<string>('');
   const toast = useToast();
@@ -19,7 +20,8 @@ const AddMessageForm: React.FC<AddMessageFormProps> = ({ id }) => {
   };
 
   const mutation = useMutation((newMessage: Partial<Message>) => postMessage(id, newMessage), {
-    onSuccess: () => {
+    onSuccess: (data: Message) => {
+      notifyMessageAdded(data); 
       toast({
         title: 'Üzenet elküldve',
         status: 'success',
@@ -38,6 +40,7 @@ const AddMessageForm: React.FC<AddMessageFormProps> = ({ id }) => {
       });
     },
   });
+  
 
   const handleSubmit = () => {
     if (!author || !text) {

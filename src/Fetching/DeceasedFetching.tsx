@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Flex, Wrap } from '@chakra-ui/react';
+import { Box, Divider, Flex, Text } from '@chakra-ui/react';
 import { useQuery } from 'react-query';
 import DeceasedCard from '../DeceasedList/DeceasedCard';
 import axios from 'axios';
@@ -113,17 +113,20 @@ export const DeceasedMessagesFetching: React.FC<{ id: number }> = ({ id }) => {
       <p>Name: {deceasedMessages?.name}</p>
       {deceasedMessages?.messageList.map((message) => (
         <Box
-          background='gray.300'
-          borderWidth='3px'
-          borderRadius='lg'
-          borderColor='gray.800'
-          height="100%"
-          key={message.id}
-          marginTop="5%">
-          Author: {message.author}
-          Text: {message.text}
-          Dátum: {new Date(message.dateOfCreation).toLocaleDateString()}
-        </Box>
+        background='gray.300'
+        borderWidth='3px'
+        borderRadius='lg'
+        borderColor='gray.800'
+        height="100%"
+        key={message.id}
+        marginTop="5%"
+      >
+        <Text fontWeight="bold">{message.author}</Text>
+        <Divider my="5px" />
+        <Text fontStyle="italic" fontSize="sm">{message.text}</Text>
+        <Divider my="5px" />
+        <Text>Dátum: {new Date(message.dateOfCreation).toLocaleDateString()}</Text>
+      </Box>
       ))
       }
     </Flex>

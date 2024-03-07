@@ -1,9 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Box, Flex, Button } from '@chakra-ui/react';
+import { Box, Flex, Button, Image } from '@chakra-ui/react';
 import { ArrowDownIcon } from '@chakra-ui/icons';
 
 import DeceasedFetching, { DeceasedMessagesFetching } from '../Fetching/DeceasedFetching';
 import SearchBar from './SearchBar/SearchBar';
+import AddMessageForm from './AddMessageForm';
+
+import sir1 from '../Pictures/sir1.jpg';
 
 const DeceasedList: React.FC = () => {
   const [nameFilter, setNameFilter] = useState<string>("");
@@ -51,7 +54,8 @@ const DeceasedList: React.FC = () => {
   };
 
   return (
-    <Box paddingTop="1vh" marginLeft="0" h={{ base: "94vh", md: "87.8vh" }}>
+    <Box paddingTop="1vh" marginLeft="0" h={{ base: "94vh", md: "87.8vh" }} pl="10%" pr="10%" 
+    overflowY="auto">
       <Flex direction="row" h="100%">
         <Flex
           width={isDeceasedMessagesSelected ? "27%" : "100%"}
@@ -82,27 +86,32 @@ const DeceasedList: React.FC = () => {
           />
         </Flex>
         <Flex direction="column" width={"73%"} display={isDeceasedMessagesSelected ? "flex" : "none"}>
-          <Box
-            background='gray.100'
-            borderWidth='3px'
-            borderRadius='lg'
-            borderColor='gray.800'
-            height="100%"
-            width="70%"
-            padding="2%"
-            overflowY="auto"
-          >
-            <DeceasedMessagesFetching id={selectedDeceasedId} />
 
-            <Box height="0px" ref={messagesEndComponent}></Box>
+          <Flex direction="row" height="93.6%">
+            <Box
+              background='gray.100'
+              borderWidth='3px'
+              borderRadius='lg'
+              borderColor='gray.800'
+              height="100%"
+              width="70%"
+              padding="2%"
+              overflowY="auto"
+            >
+              <DeceasedMessagesFetching id={selectedDeceasedId} />
 
-          </Box>
+              <Box height="0px" ref={messagesEndComponent}></Box>
+
+            </Box>
+
+            <Image src={sir1} w="30%" height="50%" />
+          </Flex>
 
           <Button
             onClick={handleScrollToBottom}
             position="absolute"
-            bottom="10"
-            left="10"
+            bottom="7%"
+            left="27.5%"
             bg="gray.800"
             borderRadius="full"
             aria-label="Scroll to bottom"
@@ -112,6 +121,10 @@ const DeceasedList: React.FC = () => {
           >
             <ArrowDownIcon boxSize="30px" color="gray.200" />
           </Button>
+
+          <Box height="4%">
+            <AddMessageForm id={selectedDeceasedId}></AddMessageForm>
+          </Box>
         </Flex>
       </Flex>
     </Box>

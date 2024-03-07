@@ -2,11 +2,14 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Box, Flex, Button, Image } from '@chakra-ui/react';
 import { ArrowDownIcon } from '@chakra-ui/icons';
 
-import DeceasedFetching, { DeceasedMessagesFetching } from '../Fetching/DeceasedFetching';
+import DeceasedFetching from '../Fetching/DeceasedFetching';
 import SearchBar from './SearchBar/SearchBar';
-import AddMessageForm from './AddMessageForm';
+import AddMessageForm from './DeceasedMessages/AddMessageForm';
+import { DeceasedMessagesFetching } from '../Fetching/DeceasedMessagesFetching';
 
 import sir1 from '../Pictures/sir1.jpg';
+import { Deceased } from '../Fetching/types';
+import MessagesPanel from './DeceasedMessages/MessagesPanel';
 
 const DeceasedList: React.FC = () => {
   const [nameFilter, setNameFilter] = useState<string>("");
@@ -14,19 +17,8 @@ const DeceasedList: React.FC = () => {
   const [deceaseYearBeforeFilter, setDeceaseYearBeforeFilter] = useState<number>(9999);
   const [orderBy, setOrderBy] = useState<string>("name-asc");
   const [isDeceasedMessagesSelected, setIsDeceasedMessagesSelected] = useState<boolean>(false);
-  const [selectedDeceasedId, setSelectedDeceasedId] = useState<number>(0);
+  const [selectedDeceased, setSelectedDeceased] = useState<Deceased>({ id: 0, name: '', dateOfDeath: new Date(), dateOfBirth: new Date() });
 
-  const messagesEndComponent = useRef<HTMLDivElement>(null);
-
-  const scrollToBottom = () => {
-    if (messagesEndComponent.current) {
-      messagesEndComponent.current.scrollIntoView({ behavior: "instant" });
-    }
-  };
-
-  useEffect(() => {
-    scrollToBottom();
-  }, [isDeceasedMessagesSelected, selectedDeceasedId]);
 
   const handleNameFilter = (query: string) => {
     setNameFilter(query);
@@ -44,19 +36,19 @@ const DeceasedList: React.FC = () => {
     setOrderBy(sortBy);
   };
 
-  const handleDeceasedMessagesSelected = (deceasedId: number) => {
-    setSelectedDeceasedId(deceasedId);
+  const handleDeceasedMessagesSelected = (deceased: Deceased) => {
+    setSelectedDeceased(deceased);
     setIsDeceasedMessagesSelected(true);
   };
 
-  const handleScrollToBottom = () => {
-    scrollToBottom();
-  };
+  const handleClosed = () => {
+    setIsDeceasedMessagesSelected(false);
+  }
 
   return (
-    <Box paddingTop="1vh" marginLeft="0" h={{ base: "94vh", md: "87.8vh" }} pl="10%" pr="10%" 
-    overflowY="auto">
-      <Flex direction="row" h="100%">
+    <Box paddingTop="0.5vh" marginLeft="0" h={{ base: "94vh", md: "87.8vh" }} pl="10%" pr="10%" overflowY="auto">
+
+      <Flex direction="row" h="100%" w="100%">
         <Flex
           width={isDeceasedMessagesSelected ? "27%" : "100%"}
           display={{
@@ -65,7 +57,8 @@ const DeceasedList: React.FC = () => {
           }}
           direction="column"
           alignItems="center"
-        >
+          height="100%"
+        >  {/*bal oldali resz*/}
           <SearchBar
             onNameFilter={handleNameFilter}
             onBirthYearFilter={handleBirthYearFilter}
@@ -85,47 +78,11 @@ const DeceasedList: React.FC = () => {
             isDeceasedMessagesSelected={isDeceasedMessagesSelected}
           />
         </Flex>
-        <Flex direction="column" width={"73%"} display={isDeceasedMessagesSelected ? "flex" : "none"}>
-
-          <Flex direction="row" height="93.6%">
-            <Box
-              background='gray.100'
-              borderWidth='3px'
-              borderRadius='lg'
-              borderColor='gray.800'
-              height="100%"
-              width="70%"
-              padding="2%"
-              overflowY="auto"
-            >
-              <DeceasedMessagesFetching id={selectedDeceasedId} />
-
-              <Box height="0px" ref={messagesEndComponent}></Box>
-
-            </Box>
-
-            <Image src={sir1} w="30%" height="50%" />
-          </Flex>
-
-          <Button
-            onClick={handleScrollToBottom}
-            position="absolute"
-            bottom="7%"
-            left="27.5%"
-            bg="gray.800"
-            borderRadius="full"
-            aria-label="Scroll to bottom"
-            _hover={{
-              bg: "gray.600"
-            }}
-          >
-            <ArrowDownIcon boxSize="30px" color="gray.200" />
-          </Button>
-
-          <Box height="4%">
-            <AddMessageForm id={selectedDeceasedId}></AddMessageForm>
+        {isDeceasedMessagesSelected && (
+          <Box h="100%" width="73%">  {/*jobb oldali resz*/}
+            <MessagesPanel selectedDeceased={selectedDeceased} notifyClosed={handleClosed}/>
           </Box>
-        </Flex>
+        )}
       </Flex>
     </Box>
   );

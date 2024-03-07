@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Input, Button, Flex, useToast } from '@chakra-ui/react';
-import { Message } from '../Fetching/DeceasedFetching';
+import { Message } from '../../Fetching/types';
+import { useMutation } from 'react-query';
 import axios from 'axios';
 
 interface AddMessageFormProps {
@@ -12,10 +13,36 @@ const AddMessageForm: React.FC<AddMessageFormProps> = ({ id }) => {
   const [text, setText] = useState<string>('');
   const toast = useToast();
 
-  const handleSubmit = async () => {
+  const postMessage = async (id: number, newMessage: Partial<Message>) => {
+    const response = await axios.put(`https://localhost:7191/api/Deceased/AddMessage/${id}`, newMessage);
+    return response.data;
+  };
+
+  const mutation = useMutation((newMessage: Partial<Message>) => postMessage(id, newMessage), {
+    onSuccess: () => {
+      toast({
+        title: 'Üzenet elküldve',
+        status: 'success',
+        duration: 3000,
+        isClosable: true,
+      });
+      setAuthor('');
+      setText('');
+    },
+    onError: () => {
+      toast({
+        title: 'Hiba történt',
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      });
+    },
+  });
+
+  const handleSubmit = () => {
     if (!author || !text) {
       toast({
-        title: 'Missing Author or Message Text',
+        title: 'Adja meg a nevet és az üzenetet',
         status: 'error',
         duration: 3000,
         isClosable: true,
@@ -23,35 +50,7 @@ const AddMessageForm: React.FC<AddMessageFormProps> = ({ id }) => {
       return;
     }
 
-    const newMessage: Partial<Message> = {
-      author: author,
-      text: text,
-      dateOfCreation: new Date(),
-    };
-
-    const postMessage = async (id: number, newMessage: Partial<Message>) => {
-      const response = await axios.put(`https://localhost:7191/api/Deceased/AddMessage/${id}`, newMessage);
-      return response.data;
-    };
-
-    try {
-      await postMessage(id, newMessage);
-      toast({
-        title: 'Message Added Successfully',
-        status: 'success',
-        duration: 3000,
-        isClosable: true,
-      });
-      setAuthor('');
-      setText('');
-    } catch (error) {
-      toast({
-        title: 'Error Adding Message',
-        status: 'error',
-        duration: 3000,
-        isClosable: true,
-      });
-    }
+    mutation.mutate({ author: author, text: text, dateOfCreation: new Date() });
   };
 
   const inputStyle = {
@@ -64,12 +63,10 @@ const AddMessageForm: React.FC<AddMessageFormProps> = ({ id }) => {
     fontSize: { base: "sm", md: "xl" }
   };
 
-
-
   return (
-    <Flex flexDirection="row" bg="gray.400" padding="0.5%">
+    <Flex flexDirection="row" bg="gray.400" padding="0.5%" h="100%" w="100%">
       <Input
-        placeholder="A gyertát gyújtotta:"
+        placeholder="A gyertát gyújtotta"
         value={author}
         onChange={(e) => setAuthor(e.target.value)}
         width="20%"
@@ -82,7 +79,7 @@ const AddMessageForm: React.FC<AddMessageFormProps> = ({ id }) => {
         width="50%"
         {...inputStyle}
       />
-      <Button onClick={handleSubmit} width="30%" colorScheme='grey'>Add Message</Button>
+      <Button onClick={handleSubmit} width="30%" colorScheme='grey' isLoading={mutation.isLoading}>Add Message</Button>
     </Flex>
   );
 };

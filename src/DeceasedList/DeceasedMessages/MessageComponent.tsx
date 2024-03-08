@@ -11,7 +11,7 @@ const MessageComponent: React.FC<MessageComponentProps> = ({ message }) => {
 
   return (
     <Box
-      background='gray.300'
+      background="gray.400"
       borderWidth='3px'
       borderRadius='lg'
       borderColor='gray.800'

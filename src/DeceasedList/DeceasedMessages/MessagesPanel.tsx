@@ -27,7 +27,7 @@ const MessagesPanel: React.FC<Props> = ({ selectedDeceased, notifyClosed }) => {
   };
 
   return (
-    <Flex direction="column" height="100%" width="100%">
+    <Flex direction="column" height="100%" width="100%" bg="gray.600" borderWidth='4px' borderColor={"gray.800"} borderRadius='xl' p="2%">
       <Box h="10%">
         <MessagesTopBar deceasedDto={deceasedDto} notifyClosed={notifyClosed} />
       </Box>

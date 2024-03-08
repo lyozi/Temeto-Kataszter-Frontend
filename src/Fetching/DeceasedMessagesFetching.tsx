@@ -57,7 +57,7 @@ export const DeceasedMessagesFetching: React.FC<DeceasedMessagesFetchingProps> =
   return (
     <Flex flexDirection="column" height="100%" width="100%">
       <Box
-        background='gray.700'
+        background='gray.50'
         borderWidth='3px'
         borderRadius='lg'
         borderColor='gray.800'

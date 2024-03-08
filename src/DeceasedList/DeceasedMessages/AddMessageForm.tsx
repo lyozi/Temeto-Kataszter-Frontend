@@ -67,7 +67,7 @@ const AddMessageForm: React.FC<AddMessageFormProps> = ({ id, notifyMessageAdded 
   };
 
   return (
-    <Flex flexDirection="row" bg="gray.400" padding="0.5%" h="100%" w="100%">
+    <Flex flexDirection="row" padding="0.5%" h="100%" w="100%">
       <Input
         placeholder="A gyertát gyújtotta"
         value={author}

@@ -10,9 +10,10 @@ import { ArrowDownIcon } from '@chakra-ui/icons';
 interface DeceasedMessagesFetchingProps {
   selectedDeceased: Deceased;
   notifyLoadingComplete: (deceasedDto: DeceasedsMessagesDTO) => void;
+  newMessage?: Message;
 }
 
-export const DeceasedMessagesFetching: React.FC<DeceasedMessagesFetchingProps> = ({ selectedDeceased, notifyLoadingComplete }) => {
+export const DeceasedMessagesFetching: React.FC<DeceasedMessagesFetchingProps> = ({ selectedDeceased, notifyLoadingComplete, newMessage }) => {
   const [messages, setMessages] = useState<Message[]>([]);
   const messagesEndComponent = useRef<HTMLDivElement>(null);
 
@@ -43,9 +44,12 @@ export const DeceasedMessagesFetching: React.FC<DeceasedMessagesFetchingProps> =
     }
   }, [deceasedMessages, notifyLoadingComplete]);
 
-  const handleMessageAdded = (newMessage: Message) => {
-    setMessages(prevMessages => [...prevMessages, newMessage]);
-  };
+  useEffect(() => {
+    if (newMessage) {
+      setMessages(prevMessages => [...prevMessages, newMessage]);
+      scrollToBottom();
+    }
+  }, [newMessage]);
 
   useEffect(() => {
     scrollToBottom();
@@ -61,18 +65,16 @@ export const DeceasedMessagesFetching: React.FC<DeceasedMessagesFetchingProps> =
         borderWidth='3px'
         borderRadius='lg'
         borderColor='gray.800'
-        padding="2%"
-        paddingBottom="0"
+        padding="5%"
+        paddingBottom="1%"
+        paddingTop="1%"
         overflowY="auto"
-        h="93.5%"
+        h="100%"
       >
         {messages.map((message) => (
           <MessageComponent message={message} key={message.id} />
         ))}
         <div ref={messagesEndComponent} /> {/* ide gorget le */}
-      </Box>
-      <Box h="6.5%">
-        <AddMessageForm id={selectedDeceased.id} notifyMessageAdded={handleMessageAdded}></AddMessageForm>
       </Box>
 
       <Button

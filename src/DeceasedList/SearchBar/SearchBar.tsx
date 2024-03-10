@@ -204,7 +204,7 @@ const SearchBar: React.FC<Props> = ({ onNameFilter, onBirthYearFilter, onDecease
                       {...RadioButtonStyle}
                       size={{ base: "sm", md: isDeceasedMessagesSelected ? "sm" : "lg" }}
                       marginLeft="5%"
-                      fontSize={rightInputGroupStyle.fontSize}
+                      fontSize={rightInputGroupStyle.size}
                     >
                       Csökkenő
                     </Button>
@@ -233,7 +233,7 @@ const SearchBar: React.FC<Props> = ({ onNameFilter, onBirthYearFilter, onDecease
               variant='outline'
               focusBorderColor={focusColor}
               outlineColor={outlineColor}
-              fontSize={rightInputGroupStyle.fontSize}
+              fontSize={rightInputGroupStyle.size}
               onChange={handleBirthYearFilter}
             />
             <InputRightAddon display={{ base: "none", md: isDeceasedMessagesSelected ? "none" : "flex" }} alignItems="center" fontSize={rightInputGroupStyle.fontSize}>

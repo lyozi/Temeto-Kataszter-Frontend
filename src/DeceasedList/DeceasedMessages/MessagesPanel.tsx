@@ -4,8 +4,7 @@ import { ArrowDownIcon } from '@chakra-ui/icons';
 import { Deceased, DeceasedsMessagesDTO, Message } from '../../Fetching/types';
 import { DeceasedMessagesFetching } from '../../Fetching/DeceasedMessagesFetching';
 import AddMessageForm from './AddMessageForm';
-import sir1 from '../../Pictures/sir1.jpg'
-import MessagesTopBar from './MessagesTopBar';
+import MessagesSideBar from './MessagesSideBar';
 
 interface Props {
   selectedDeceased: Deceased;
@@ -21,25 +20,30 @@ const MessagesPanel: React.FC<Props> = ({ selectedDeceased, notifyClosed }) => {
     nrOfCandles: 0,
   })
 
+  const [newMessage, setNewMessage] = useState<Message>();
+
   const notifyLoadingComplete = (deceasedDto: DeceasedsMessagesDTO) => {
     deceasedDto.deceased = selectedDeceased;
     setDeceasedDto(deceasedDto);
   };
 
+  const handleMessageAdded = (message: Message) => {
+    setNewMessage(message);
+  };
+
   return (
-    <Flex direction="column" height="100%" width="100%" bg="gray.600" borderWidth='4px' borderColor={"gray.800"} borderRadius='xl' p="2%">
-      <Box h="10%">
-        <MessagesTopBar deceasedDto={deceasedDto} notifyClosed={notifyClosed} />
-      </Box>
-      <Flex direction="row" height="90%">
+    <Flex direction="column" height="100%" width="100%" bg="gray.600" borderWidth='4px' borderColor={"gray.800"} borderRadius='xl'>
+      <Flex direction="row" height="100%">
         <Box
-          width="70%"
+          width="70%" p="1%" pr="0" py="1%"
         >
-          <DeceasedMessagesFetching selectedDeceased={selectedDeceased} notifyLoadingComplete={notifyLoadingComplete}/>
+          <DeceasedMessagesFetching selectedDeceased={selectedDeceased} notifyLoadingComplete={notifyLoadingComplete} newMessage={newMessage} />
 
         </Box>
 
-        <Image src={sir1} w="30%" height="50%" />
+        <Box width="30%">
+          <MessagesSideBar deceasedDto={deceasedDto} notifyClosed={notifyClosed} notifyMessageAdded={handleMessageAdded} />
+        </Box>
       </Flex>
     </Flex>
   );

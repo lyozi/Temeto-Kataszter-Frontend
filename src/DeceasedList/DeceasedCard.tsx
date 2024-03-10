@@ -23,7 +23,7 @@ const getRandomImage = () => {
 
 const DeceasedCard: React.FC<DeceasedCardProps> = ({ deceased, handleDeceasedMessagesSelected, isDeceasedMessagesSelected }) => {
   const randomImage = getRandomImage();
-  
+
   const handleClickDeceasedMessagesSelected: MouseEventHandler<HTMLDivElement> = () => {
     handleDeceasedMessagesSelected(deceased)
   }
@@ -32,8 +32,7 @@ const DeceasedCard: React.FC<DeceasedCardProps> = ({ deceased, handleDeceasedMes
     <Box
       ml="1%"
       mt='1.5%'
-      w={{ base: "48.5%", md: isDeceasedMessagesSelected? "48.5" : "24%" }}
-      h="400px"
+      w={{ base: "48.5%", md: isDeceasedMessagesSelected ? "48.5" : "24%" }}
       borderWidth='3px'
       borderRadius='lg'
       overflow='hidden'
@@ -44,10 +43,11 @@ const DeceasedCard: React.FC<DeceasedCardProps> = ({ deceased, handleDeceasedMes
     >
 
       <Image src={randomImage} w="100%" />
-      <Box p='4'>
-        <Box fontWeight='semibold' as='h6' lineHeight='tight'>
+      <Box p="5%">
+        <Box fontWeight='semibold' as='h6' noOfLines={1}>
           {deceased.name}
         </Box>
+
 
         <Box color='gray.500' fontWeight='semibold' fontSize='sm'>
           Született: {new Date(deceased.dateOfBirth).toLocaleDateString()}

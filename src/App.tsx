@@ -7,6 +7,7 @@ import NotFound from './NotFound/NotFound';
 import Home from './Home/Home';
 import DeceasedList from './DeceasedList/DeceasedList';
 import { QueryClient, QueryClientProvider } from "react-query";
+import LoginPage from './Login/LoginPage';
 
 const theme = extendTheme({
   styles: {
@@ -27,13 +28,18 @@ function App() {
         <Router>
           <Box height="100vh">
             <Header />
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/harta" element={<Map />} />
-              <Route path="/informatii" element={<Information />} />
-              <Route path="lista_inmormantati" element={<DeceasedList />}></Route>
-              <Route path="*" element={<NotFound />} />
-            </Routes>
+            <Box h={{ base: "94vh", md: "87.8vh" }}>
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/harta" element={<Map />} />
+                <Route path="/informatii" element={<Information />} />
+                <Route path="lista_inmormantati" element={<DeceasedList />}></Route>
+                <Route path="*" element={<NotFound />} />
+                <Route path="/login-register" element={<LoginPage onLogin={function (email: string, role: number): void {
+                  throw new Error('Function not implemented.');
+                }} />} />
+              </Routes>
+            </Box>
           </Box>
         </Router>
       </ChakraProvider>

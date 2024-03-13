@@ -75,23 +75,28 @@ export const DeceasedMessagesFetching: React.FC<DeceasedMessagesFetchingProps> =
           <MessageComponent message={message} key={message.id} />
         ))}
         <div ref={messagesEndComponent} /> {/* ide gorget le */}
-      </Box>
 
-      <Button
-        onClick={scrollToBottom}
-        position="absolute"
-        bottom="7%"
-        left="27.5%"
-        bg="gray.800"
-        borderRadius="full"
-        _hover={{
-          bg: "gray.600"
-        }}
-      >
-        <ArrowDownIcon boxSize="30px" color="gray.200" />
-      </Button>
+      </Box>
     </Flex>
   );
 };
+
+/*
+        <Button
+          onClick={scrollToBottom}
+          position="static"
+          width="10%"
+          bottom="2%"
+          left="2%"
+          bg="gray.800"
+          borderRadius="full"
+          px="0.8%"
+          _hover={{
+            bg: "gray.600"
+          }}
+        >
+          <ArrowDownIcon boxSize="30px" color="gray.200" />
+        </Button>
+*/
 
 export default DeceasedMessagesFetching;

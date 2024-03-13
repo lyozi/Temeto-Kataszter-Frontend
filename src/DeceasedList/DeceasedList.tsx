@@ -46,7 +46,7 @@ const DeceasedList: React.FC = () => {
   }
 
   return (
-    <Box paddingTop="0.5vh" marginLeft="0" h={{ base: "94vh", md: "87.8vh" }} pl="10%" pr="10%" overflowY="auto">
+    <Box paddingTop="0.5vh" marginLeft="0" h="100%" pl="10%" pr="10%" overflowY="auto">
 
       <Flex direction="row" h="100%" w="100%">
         <Flex

@@ -43,7 +43,7 @@ const DeceasedCard: React.FC<DeceasedCardProps> = ({ deceased, handleDeceasedMes
     >
 
       <Image src={randomImage} w="100%" />
-      <Box p="5%">
+      <Box p="5%" py="10%">
         <Box fontWeight='semibold' as='h6' noOfLines={1}>
           {deceased.name}
         </Box>

@@ -2,62 +2,49 @@ import React, { useState } from "react";
 import { Input, Box, Button, Text, Divider, Flex, InputGroup, InputRightElement } from "@chakra-ui/react";
 import ForgotPasswordLink from "./ForgotPasswordLink";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
+import { useMutation } from "react-query";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { User } from "../types";
+import { inputStyle, RadioButtonStyle } from "../styles";
 
 interface Props {
-    onLogin: (email: string, role: number) => void;
+    onLogin: (user: User) => void;
 }
 
-const LoginPage: React.FC<Props> = ({ onLogin }) => {
+const RegisterPage: React.FC<Props> = ({ onLogin }) => {
     const [username, setUsername] = useState<string>("");
     const [password, setPassword] = useState<string>("");
     const [showPassword, setShowPassword] = useState<boolean>(false);
+    const navigate = useNavigate();
 
-    const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setUsername(e.target.value);
+    let url = 'https://localhost:7191/Role/';
+
+    const loginUser = async ({ email, password }: { email: string; password: string }) => {
+        try {
+            const response = await axios.post(url + 'LoginAndRetrieveUserRoles', { email, password });
+            const role = response.data;
+
+            const user: User = {
+                email,
+                role
+            };
+
+            return user;
+        } catch (error) {
+            throw new Error('Login failed');
+        }
     };
 
-    const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setPassword(e.target.value);
-    };
-
-    const handleTogglePasswordVisibility = () => {
-        setShowPassword(!showPassword);
-    };
-
-    const handleSubmit = () => {
-        console.log("Submitted");
-    };
-
-    const bgcolor = 'gray.100';
-    const outlineColor = 'gray.800';
-    const focusColor = "#234150";
-    const textColor = 'gray.600';
-
-    const inputStyle = {
-        background: bgcolor,
-        color: textColor,
-        _placeholder: { color: textColor },
-        variant: 'outline',
-        focusBorderColor: focusColor,
-        outlineColor: outlineColor,
-        borderRadius: "sm",
-        fontSize: "x-large",
-        py: "7%"
-    };
-
-    const RadioButtonStyle = {
-        variant: "solid",
-        borderWidth: '1px',
-        borderColor: "black",
-        borderRadius: 'full',
-        boxShadow: 'md',
-        size: { base: "sm", md: "lg" },
-        w: "100%",
-        bg: "#234150",
-        color: "gray.200",
-        p: "8%",
-        fontSize: "3xl"
-    };
+    const loginMutation = useMutation(loginUser, {
+        onSuccess: (data) => {
+            console.log('User logged in successfully with roles:', data.role);
+            onLogin(data);
+        },
+        onError: (error) => {
+            console.error('Login failed:', error);
+        },
+    });
 
     return (
         <Box borderRadius="xl" px="37%" h="100%" pt="3%" pb="5%">
@@ -67,7 +54,7 @@ const LoginPage: React.FC<Props> = ({ onLogin }) => {
                     <Input
                         placeholder="E-mail"
                         value={username}
-                        onChange={handleUsernameChange}
+                        onChange={(e) => setUsername(e.target.value)}
                         mb="9%"
                         {...inputStyle}
                     />
@@ -77,12 +64,12 @@ const LoginPage: React.FC<Props> = ({ onLogin }) => {
                             type={showPassword ? "text" : "password"}
                             placeholder="Jelszó"
                             value={password}
-                            onChange={handlePasswordChange}
+                            onChange={(e) => setPassword(e.target.value)}
                             {...inputStyle}
                         />
                         <InputRightElement alignContent="center" verticalAlign="center" height="100%" mr="1.5%">
                             <Button
-                                onClick={handleTogglePasswordVisibility}
+                                onClick={() => setShowPassword(!showPassword)}
                                 variant="ghost"
                                 size="md"
                                 fontSize="x-large">
@@ -92,17 +79,25 @@ const LoginPage: React.FC<Props> = ({ onLogin }) => {
                     </InputGroup>
                 </Box>
                 <ForgotPasswordLink />
-                <Button onClick={handleSubmit} {...RadioButtonStyle} mb="3%">Bejelentkezés</Button>
+                <Button
+                    onClick={() => loginMutation.mutate({ email: username, password: password })}
+                    {...RadioButtonStyle} mb="3%"
+                    _hover={{
+                        bg: "gray.600"
+                    }}>Bejelentkezés</Button>
                 <Flex flexDir="row" alignItems="center" justifyContent="center">
                     <Divider my="2%" borderColor="gray.800" borderWidth="1px" />
                     <Text mx="5%" textAlign="center" fontSize="130%">vagy</Text>
                     <Divider my="2%" borderColor="gray.800" borderWidth="1px" />
                 </Flex>
                 <Text fontSize="xl" fontWeight="Bold" mb="5%">Még nincs fiókja?</Text>
-                <Button onClick={handleSubmit} {...RadioButtonStyle} bg="gray.200" color="black" mb="5%">Regisztráció</Button>
+                <Button onClick={() => navigate("/register")} {...RadioButtonStyle} bg="gray.200" color="black" mb="5%"
+                    _hover={{
+                        bg: "gray.300"
+                    }}>Regisztráció</Button>
             </Box>
         </Box>
     );
 };
 
-export default LoginPage;
+export default RegisterPage;

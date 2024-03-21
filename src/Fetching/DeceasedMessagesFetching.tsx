@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Box, Button, Flex } from '@chakra-ui/react';
 import { useQuery } from 'react-query';
 import axios from 'axios';
-import { DeceasedsMessagesDTO, Deceased, Message } from './types';
+import { DeceasedsMessagesDTO, Deceased, Message } from '../types';
 import MessageComponent from '../DeceasedList/DeceasedMessages/MessageComponent';
 import AddMessageForm from '../DeceasedList/DeceasedMessages/AddMessageForm';
 import { ArrowDownIcon } from '@chakra-ui/icons';

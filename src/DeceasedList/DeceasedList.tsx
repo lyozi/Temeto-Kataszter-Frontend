@@ -8,7 +8,7 @@ import AddMessageForm from './DeceasedMessages/AddMessageForm';
 import { DeceasedMessagesFetching } from '../Fetching/DeceasedMessagesFetching';
 
 import sir1 from '../Pictures/sir1.jpg';
-import { Deceased } from '../Fetching/types';
+import { Deceased } from '../types';
 import MessagesPanel from './DeceasedMessages/MessagesPanel';
 
 const DeceasedList: React.FC = () => {

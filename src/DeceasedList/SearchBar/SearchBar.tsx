@@ -122,7 +122,7 @@ const SearchBar: React.FC<Props> = ({ onNameFilter, onBirthYearFilter, onDecease
   return (
     <Box display="flex" flexDirection="row" flexWrap="wrap" justifyContent="space-between" bg="gray.400" borderWidth='4px' borderColor={outlineColor} borderRadius='xl'
       width={{ base: "100%", md: isDeceasedMessagesSelected ? "100%" : "66%" }}>
-      <Flex width="50%" flexDirection="column" p={{ base: "1%", md: isDeceasedMessagesSelected ? "1%" : "2%" }} paddingTop={{ base: "1%", md: isDeceasedMessagesSelected ? "1%" : "0.5%" }} paddingBottom={{ base: "2%", md: isDeceasedMessagesSelected ? "2%" : "1%" }}>
+      <Flex width="50%" flexDirection="column" p={{ base: "5%", md: isDeceasedMessagesSelected ? "5%" : "2%" }} paddingTop={{ base: "1%", md: isDeceasedMessagesSelected ? "1%" : "0.5%" }} paddingBottom={{ base: "2%", md: isDeceasedMessagesSelected ? "2%" : "1%" }}>
         <Box width="100%">
           <Box {...cimStyle}>Keresés:</Box>
           <InputGroup width="100%" alignContent='center'

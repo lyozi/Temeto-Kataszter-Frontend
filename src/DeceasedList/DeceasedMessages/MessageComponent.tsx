@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, Divider, Text } from '@chakra-ui/react';
-import { Message } from '../../Fetching/types';
+import { Message } from '../../types';
 import koszoru1 from '../../Pictures/koszoru1.png';
 import koszoru2 from '../../Pictures/koszoru2.png';
 import koszoru3 from '../../Pictures/koszoru3.png';

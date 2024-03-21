@@ -7,7 +7,7 @@ import sir3 from '../Pictures/sir3.jpg';
 import sir4 from '../Pictures/sir4.jpg';
 import sir5 from '../Pictures/sir5.jpg';
 import sir6 from '../Pictures/sir6.jpg';
-import { Deceased } from '../Fetching/types';
+import { Deceased } from '../types';
 
 interface DeceasedCardProps {
   deceased: Deceased;

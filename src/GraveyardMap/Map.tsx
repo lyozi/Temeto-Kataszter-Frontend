@@ -1,10 +1,12 @@
 import React from 'react';
+import LeafletMap from './LeafletMap';
+import { Box } from '@chakra-ui/react';
 
 const Map: React.FC = () => {
   return (
-    <div>
-      <h1>Map</h1>
-    </div>
+    <Box h="87.855vh" overflow="hidden" p="0px">
+      <LeafletMap/> 
+    </Box>
   );
 };
 

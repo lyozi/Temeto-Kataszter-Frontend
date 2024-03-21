@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Input, Button, Flex, useToast, Select, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, Textarea, Text, Divider } from '@chakra-ui/react';
-import { Message } from '../../Fetching/types';
+import { Message } from '../../types';
 import { useMutation } from 'react-query';
 import axios from 'axios';
 

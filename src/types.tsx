@@ -20,3 +20,8 @@ export interface Message {
   text: string;
   dateOfCreation: Date;
 }
+
+export interface User {
+  email: string;
+  role: string;
+}

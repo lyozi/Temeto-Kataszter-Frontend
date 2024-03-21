@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Box, Button, Flex, Image } from '@chakra-ui/react';
 import { ArrowDownIcon } from '@chakra-ui/icons';
-import { Deceased, DeceasedsMessagesDTO, Message } from '../../Fetching/types';
+import { Deceased, DeceasedsMessagesDTO, Message } from '../../types';
 import { DeceasedMessagesFetching } from '../../Fetching/DeceasedMessagesFetching';
 import AddMessageForm from './AddMessageForm';
 import MessagesSideBar from './MessagesSideBar';

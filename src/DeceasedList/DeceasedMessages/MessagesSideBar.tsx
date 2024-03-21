@@ -3,7 +3,7 @@ import { Flex, Text, Button, Image, VStack, Box, Divider, Modal, ModalContent } 
 import { CloseIcon, EditIcon } from '@chakra-ui/icons';
 import sir1 from '../../Pictures/sir1.jpg';
 import AddMessageForm from './AddMessageForm';
-import { DeceasedsMessagesDTO, Message } from '../../Fetching/types';
+import { DeceasedsMessagesDTO, Message } from '../../types';
 
 interface MessagesSideBarProps {
   deceasedDto: DeceasedsMessagesDTO;

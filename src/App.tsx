@@ -8,6 +8,11 @@ import Home from './Home/Home';
 import DeceasedList from './DeceasedList/DeceasedList';
 import { QueryClient, QueryClientProvider } from "react-query";
 import LoginPage from './Login/LoginPage';
+import RegisterPage from './Login/RegisterPage';
+import { User } from './types';
+import { useState } from 'react';
+import { MapContainer, Marker, Popup, TileLayer, useMap } from 'react-leaflet'
+import LeafletMap from "./GraveyardMap/LeafletMap";
 
 const theme = extendTheme({
   styles: {
@@ -22,12 +27,18 @@ const theme = extendTheme({
 const queryClient = new QueryClient();
 
 function App() {
+  const [loggedUser, setLoggedUser] = useState<User>({ email: "", role: "Member" });
+
+  const onLogin = (user: User) => {
+    setLoggedUser(user);
+  }
+
   return (
     <QueryClientProvider client={queryClient}>
       <ChakraProvider theme={theme}>
         <Router>
           <Box height="100vh">
-            <Header />
+            <Header loggedUserRole={loggedUser?.role} />
             <Box h={{ base: "94vh", md: "87.8vh" }}>
               <Routes>
                 <Route path="/" element={<Home />} />
@@ -35,9 +46,8 @@ function App() {
                 <Route path="/informatii" element={<Information />} />
                 <Route path="lista_inmormantati" element={<DeceasedList />}></Route>
                 <Route path="*" element={<NotFound />} />
-                <Route path="/login-register" element={<LoginPage onLogin={function (email: string, role: number): void {
-                  throw new Error('Function not implemented.');
-                }} />} />
+                <Route path="/login" element={<LoginPage onLogin={onLogin} />} />
+                <Route path="/register" element={<RegisterPage onLogin={onLogin} />} />
               </Routes>
             </Box>
           </Box>

@@ -3,7 +3,7 @@ import { Box, Divider, Flex, Text } from '@chakra-ui/react';
 import { useQuery } from 'react-query';
 import DeceasedCard from '../DeceasedList/DeceasedCard';
 import axios from 'axios';
-import { DeceasedsMessagesDTO, Deceased } from './types';
+import { DeceasedsMessagesDTO, Deceased } from '../types';
 
 interface FetchingProps {
   searchParams?: {

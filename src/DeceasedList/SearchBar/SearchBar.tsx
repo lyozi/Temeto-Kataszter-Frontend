@@ -89,7 +89,7 @@ const SearchBar: React.FC<Props> = ({ onNameFilter, onBirthYearFilter, onDecease
   const secondTextsPaddingBottom = "11%";
 
   const cimStyle = {
-    fontSize: ["2xl", "4xl"], // Első elem a mobil nézet, második elem a desktop nézet
+    fontSize: ["2xl", isDeceasedMessagesSelected ? "3xl" : "4xl"], // Első elem a mobil nézet, második elem a desktop nézet
     fontWeight: "bold",
     height: 50,
     paddingBottom: "10%"
@@ -114,15 +114,15 @@ const SearchBar: React.FC<Props> = ({ onNameFilter, onBirthYearFilter, onDecease
 
   const labelStyle = {
     w: { base: "60%", md: isDeceasedMessagesSelected ? "60%" : "50%" },
-    fontSize: ["sm", "2xl"]
+    fontSize: ["sm", isDeceasedMessagesSelected ? "md" : "2xl"]
   }
 
-  const isMobile = window.innerWidth <= 768;
+  const isMobile = window.innerWidth <= 768 || isDeceasedMessagesSelected;
 
   return (
     <Box display="flex" flexDirection="row" flexWrap="wrap" justifyContent="space-between" bg="gray.400" borderWidth='4px' borderColor={outlineColor} borderRadius='xl'
       width={{ base: "100%", md: isDeceasedMessagesSelected ? "100%" : "66%" }}>
-      <Flex width="50%" flexDirection="column" p={{ base: "1%", md: isDeceasedMessagesSelected ? "1%" : "2%" }} paddingTop={{ base: "1%", md: isDeceasedMessagesSelected ? "1%" : "0.5%" }} paddingBottom={{ base: "2%", md: isDeceasedMessagesSelected ? "2%" : "1%" }}>
+      <Flex width="50%" flexDirection="column" p={{ base: "5%", md: isDeceasedMessagesSelected ? "5%" : "2%" }} paddingTop={{ base: "1%", md: isDeceasedMessagesSelected ? "1%" : "0.5%" }} paddingBottom={{ base: "2%", md: isDeceasedMessagesSelected ? "2%" : "1%" }}>
         <Box width="100%">
           <Box {...cimStyle}>Keresés:</Box>
           <InputGroup width="100%" alignContent='center'
@@ -189,23 +189,28 @@ const SearchBar: React.FC<Props> = ({ onNameFilter, onBirthYearFilter, onDecease
                 Növekvő
               </Button>
 
-              <Show above={isDeceasedMessagesSelected ? "none" : "sm"}>
-                <Button
-                  value="desc"
-                  onClick={() => handleSort(sortOption, "desc")}
-                  color={sortDirection === "desc" ? "white" : "gray.800"}
-                  bg={sortDirection === "desc" ? "gray.800" : "white"}
-                  _hover={{
-                    bg: sortDirection === "desc" ? "gray.700" : "gray.200"
-                  }}
-                  {...RadioButtonStyle}
-                  size={{ base: "sm", md: isDeceasedMessagesSelected ? "sm" : "lg" }}
-                  marginLeft="5%"
-                  fontSize={rightInputGroupStyle.fontSize}
-                >
-                  Csökkenő
-                </Button>
-              </Show>
+              {
+                !isDeceasedMessagesSelected &&
+                (
+                  <Show breakpoint='(min-width: 768px)'>
+                    <Button
+                      value="desc"
+                      onClick={() => handleSort(sortOption, "desc")}
+                      color={sortDirection === "desc" ? "white" : "gray.800"}
+                      bg={sortDirection === "desc" ? "gray.800" : "white"}
+                      _hover={{
+                        bg: sortDirection === "desc" ? "gray.700" : "gray.200"
+                      }}
+                      {...RadioButtonStyle}
+                      size={{ base: "sm", md: isDeceasedMessagesSelected ? "sm" : "lg" }}
+                      marginLeft="5%"
+                      fontSize={rightInputGroupStyle.size}
+                    >
+                      Csökkenő
+                    </Button>
+                  </Show>
+                )
+              }
             </Flex>
 
           </Flex>
@@ -228,7 +233,7 @@ const SearchBar: React.FC<Props> = ({ onNameFilter, onBirthYearFilter, onDecease
               variant='outline'
               focusBorderColor={focusColor}
               outlineColor={outlineColor}
-              fontSize={rightInputGroupStyle.fontSize}
+              fontSize={rightInputGroupStyle.size}
               onChange={handleBirthYearFilter}
             />
             <InputRightAddon display={{ base: "none", md: isDeceasedMessagesSelected ? "none" : "flex" }} alignItems="center" fontSize={rightInputGroupStyle.fontSize}>

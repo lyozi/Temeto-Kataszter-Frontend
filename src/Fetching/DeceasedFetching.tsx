@@ -1,15 +1,9 @@
 import React from 'react';
-import { Flex, Wrap } from '@chakra-ui/react';
+import { Box, Divider, Flex, Text } from '@chakra-ui/react';
 import { useQuery } from 'react-query';
 import DeceasedCard from '../DeceasedList/DeceasedCard';
 import axios from 'axios';
-
-export interface Deceased {
-  id: number;
-  name: string;
-  dateOfDeath: Date;
-  dateOfBirth: Date;
-}
+import { DeceasedsMessagesDTO, Deceased } from '../types';
 
 interface FetchingProps {
   searchParams?: {
@@ -18,7 +12,8 @@ interface FetchingProps {
     deceaseYearBefore?: number;
     orderBy?: string;
   };
-  handleDeceasedMessagesSelected: (id: number) => void;
+  handleDeceasedMessagesSelected: (deceased: Deceased) => void;
+  isDeceasedMessagesSelected: boolean;
 }
 
 const retrieveDeceased = async (searchParams?: FetchingProps['searchParams']): Promise<Deceased[]> => {
@@ -32,28 +27,27 @@ const retrieveDeceased = async (searchParams?: FetchingProps['searchParams']): P
   return response.data;
 };
 
-const DeceasedFetching: React.FC<FetchingProps> = ({ searchParams, handleDeceasedMessagesSelected }) => {
+const DeceasedFetching: React.FC<FetchingProps> = ({ searchParams, handleDeceasedMessagesSelected, isDeceasedMessagesSelected }) => {
   const { data: deceaseds, error, isLoading } = useQuery<Deceased[], Error>(
     ['deceasedsData', searchParams],
     () => retrieveDeceased(searchParams),
   );
 
-  if (isLoading) return <div>Fetching deceaseds...</div>;
-  if (error) return <div>An error occurred: {error.message}</div>;
+  if (isLoading) return <div>Keresés...</div>;
+  if (error) return <div>Hiba történt: {error.message}</div>;
 
   return (
-    <Flex flexDirection="row" flexWrap="wrap">
-        {deceaseds &&
-          deceaseds.map((deceased) => (
-            <DeceasedCard
-              key={deceased.id}
-              id={deceased.id}
-              name={deceased.name}
-              dateOfDeath={new Date(deceased.dateOfDeath)}
-              dateOfBirth={new Date(deceased.dateOfBirth)}
-              handleDeceasedMessagesSelected={handleDeceasedMessagesSelected}
-            />
-          ))}
+    <Flex flexDirection="row" flexWrap="wrap"
+      overflowY={isDeceasedMessagesSelected ? "scroll" : "visible"}>
+      {deceaseds &&
+        deceaseds.map((deceased) => (
+          <DeceasedCard
+            deceased={deceased}
+            handleDeceasedMessagesSelected={handleDeceasedMessagesSelected}
+            isDeceasedMessagesSelected={isDeceasedMessagesSelected}
+            key={deceased.id}
+          />
+        ))}
     </Flex>
   );
 };

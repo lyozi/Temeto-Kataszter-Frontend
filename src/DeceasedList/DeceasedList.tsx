@@ -1,8 +1,15 @@
-import React, { useState } from 'react';
-import { Box, Flex } from '@chakra-ui/react';
+import React, { useState, useEffect, useRef } from 'react';
+import { Box, Flex, Button, Image } from '@chakra-ui/react';
+import { ArrowDownIcon } from '@chakra-ui/icons';
+
 import DeceasedFetching from '../Fetching/DeceasedFetching';
 import SearchBar from './SearchBar/SearchBar';
-import DeceasedMessages from './DeceasedMessages';
+import AddMessageForm from './DeceasedMessages/AddMessageForm';
+import { DeceasedMessagesFetching } from '../Fetching/DeceasedMessagesFetching';
+
+import sir1 from '../Pictures/sir1.jpg';
+import { Deceased } from '../types';
+import MessagesPanel from './DeceasedMessages/MessagesPanel';
 
 const DeceasedList: React.FC = () => {
   const [nameFilter, setNameFilter] = useState<string>("");
@@ -10,55 +17,48 @@ const DeceasedList: React.FC = () => {
   const [deceaseYearBeforeFilter, setDeceaseYearBeforeFilter] = useState<number>(9999);
   const [orderBy, setOrderBy] = useState<string>("name-asc");
   const [isDeceasedMessagesSelected, setIsDeceasedMessagesSelected] = useState<boolean>(false);
+  const [selectedDeceased, setSelectedDeceased] = useState<Deceased>({ id: 0, name: '', dateOfDeath: new Date(), dateOfBirth: new Date() });
+
 
   const handleNameFilter = (query: string) => {
-    console.log("Search query:", query);
     setNameFilter(query);
   };
 
   const handleBirthYearFilter = (year: number) => {
-    console.log("Filter:", year);
-    if (!isNaN(year)) {
-      setBirthYearAfterFilter(year);
-    }
-    else {
-      setBirthYearAfterFilter(9999);
-    }
+    setBirthYearAfterFilter(year);
   };
 
   const handleDeceaseYearFilter = (year: number) => {
-    console.log("Filter:", year);
-    const parsedYear = year;
-    if (!isNaN(parsedYear)) {
-      setDeceaseYearBeforeFilter(parsedYear);
-    }
-    else {
-      setDeceaseYearBeforeFilter(0);
-    }
+    setDeceaseYearBeforeFilter(year);
   };
 
   const handleSort = (sortBy: string) => {
-    console.log("Sort by:", sortBy);
     setOrderBy(sortBy);
   };
 
-  const handleDeceasedMessagesSelected = (deceasedId?: number) => {
+  const handleDeceasedMessagesSelected = (deceased: Deceased) => {
+    setSelectedDeceased(deceased);
     setIsDeceasedMessagesSelected(true);
-    console.log("Selected id:", deceasedId);
   };
 
+  const handleClosed = () => {
+    setIsDeceasedMessagesSelected(false);
+  }
+
   return (
-    <Box marginBottom="1%" marginTop="1%" marginLeft="0">
-      <Flex direction="row">
+    <Box paddingTop="0.5vh" marginLeft="0" h="100%" pl="10%" pr="10%" overflowY="auto">
+
+      <Flex direction="row" h="100%" w="100%">
         <Flex
+          width={isDeceasedMessagesSelected ? "27%" : "100%"}
           display={{
             base: isDeceasedMessagesSelected ? "none" : "flex",
             md: "flex"
           }}
           direction="column"
           alignItems="center"
-          width={isDeceasedMessagesSelected ? "25%" : "100%"}
-        >
+          height="100%"
+        >  {/*bal oldali resz*/}
           <SearchBar
             onNameFilter={handleNameFilter}
             onBirthYearFilter={handleBirthYearFilter}
@@ -75,11 +75,16 @@ const DeceasedList: React.FC = () => {
               orderBy: orderBy
             }}
             handleDeceasedMessagesSelected={handleDeceasedMessagesSelected}
+            isDeceasedMessagesSelected={isDeceasedMessagesSelected}
           />
         </Flex>
-        <DeceasedMessages />
-      </Flex >
-    </Box >
+        {isDeceasedMessagesSelected && (
+          <Box h="100%" width="73%">  {/*jobb oldali resz*/}
+            <MessagesPanel selectedDeceased={selectedDeceased} notifyClosed={handleClosed}/>
+          </Box>
+        )}
+      </Flex>
+    </Box>
   );
 };
 

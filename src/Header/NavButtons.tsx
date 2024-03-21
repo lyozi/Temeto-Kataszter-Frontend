@@ -4,11 +4,12 @@ import { useNavigate, useLocation } from "react-router-dom";
 
 interface NavButtonsProps {
   onClose: () => void;
+  loggedUserRole: string;
 }
 
 const buttonStyles = {
   color: "gray.200",
-  fontSize: "30px",
+  fontSize: { base: "200%", md: "100%", lg: "120%", xl: "200%" },
   size: "lg",
   height: '45px',
   mr: '10px',
@@ -17,7 +18,7 @@ const buttonStyles = {
   _active: { bg: 'gray.600' }
 };
 
-const NavButtons: React.FC<NavButtonsProps> = ({ onClose }) => {
+const NavButtons: React.FC<NavButtonsProps> = ({ onClose, loggedUserRole }) => {
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -58,11 +59,21 @@ const NavButtons: React.FC<NavButtonsProps> = ({ onClose }) => {
       </Button>
       <Button
         {...buttonStyles}
-        onClick={() => handleClick("/login-register")}
+        onClick={() => handleClick("/login")}
         isActive={location.pathname === "/login-register"}
       >
         Bejelentkezés
       </Button>
+      {
+        (loggedUserRole == "Admin") &&
+        <Button
+          {...buttonStyles}
+          onClick={() => handleClick("/manage")}
+          isActive={location.pathname === "/manage"}
+        >
+          Temető adminisztrálása
+        </Button>
+      }
     </>
   );
 };

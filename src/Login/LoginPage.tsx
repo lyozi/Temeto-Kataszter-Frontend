@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Input, Box, Button, Text, Divider, Flex, InputGroup, InputRightElement } from "@chakra-ui/react";
+import { Input, Box, Button, Text, Divider, Flex, InputGroup, InputRightElement, useToast } from "@chakra-ui/react";
 import ForgotPasswordLink from "./ForgotPasswordLink";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { useMutation } from "react-query";
@@ -17,6 +17,7 @@ const RegisterPage: React.FC<Props> = ({ onLogin }) => {
     const [password, setPassword] = useState<string>("");
     const [showPassword, setShowPassword] = useState<boolean>(false);
     const navigate = useNavigate();
+    const toast = useToast();
 
     let url = 'https://localhost:7191/Role/';
 
@@ -40,9 +41,24 @@ const RegisterPage: React.FC<Props> = ({ onLogin }) => {
         onSuccess: (data) => {
             console.log('User logged in successfully with roles:', data.role);
             onLogin(data);
+            toast({
+                title: "Sikeres bejelentkezés",
+                description: "Üdvözöljük!",
+                status: "success",
+                duration: 5000,
+                isClosable: true,
+            });
+            navigate("/");
         },
         onError: (error) => {
             console.error('Login failed:', error);
+            toast({
+                title: "Sikertelen bejelentkezés",
+                description: "Hibás felhasználónév vagy jelszó.",
+                status: "error",
+                duration: 5000,
+                isClosable: true,
+            });
         },
     });
 

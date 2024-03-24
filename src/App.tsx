@@ -42,7 +42,7 @@ function App() {
             <Box h={{ base: "94vh", md: "87.8vh" }}>
               <Routes>
                 <Route path="/" element={<Home />} />
-                <Route path="/harta" element={<Map />} />
+                <Route path="/harta" element={<Map user={loggedUser} />} />
                 <Route path="/informatii" element={<Information />} />
                 <Route path="lista_inmormantati" element={<DeceasedList />}></Route>
                 <Route path="*" element={<NotFound />} />

@@ -5,14 +5,7 @@ import balyok from '../Pictures/balyok.png';
 import GraveCard from '../DeceasedList/GraveCard';
 import axios from 'axios';
 import GraveAddForm from './GraveAddForm';
-
-export interface Grave {
-  id: number;
-  row: number;
-  number: number;
-  type: number;
-  image?: string;
-}
+import {Grave} from '../types';
 
 const retrieveGraves = async (): Promise<Grave[]> => {
   const response = await axios.get<Grave[]>('https://localhost:7191/api/Graves');
@@ -48,10 +41,6 @@ const DisplayGraves: React.FC = () => {
       });
     },
   });
-
-  const handleAddGrave = (newGrave: Partial<Grave>) => {
-    mutation.mutate(newGrave);
-  };
 
   if (isLoading) return <div>Fetching graves...</div>;
   if (error) return <div>An error occurred: {error.message}</div>;

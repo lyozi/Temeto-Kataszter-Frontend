@@ -1,3 +1,12 @@
+import {LatLngLiteral } from "leaflet";
+
+export interface Grave {
+  id: number;
+  row: number;
+  number: number;
+  type: number;
+}
+
 export interface Deceased {
   id: number;
   name: string;
@@ -24,4 +33,10 @@ export interface Message {
 export interface User {
   email: string;
   role: string;
+}
+
+export interface GraveUIPolygon {
+  id: number;
+  latLngs: LatLngLiteral[];
+  graveId?: number;
 }

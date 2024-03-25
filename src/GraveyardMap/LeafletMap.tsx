@@ -1,6 +1,6 @@
 // LeafletMap.tsx
-import React, { useState } from "react";
-import { MapContainer, TileLayer, FeatureGroup, Polygon } from "react-leaflet";
+import React, { useEffect, useState } from "react";
+import { MapContainer, TileLayer, FeatureGroup, Polygon, GeoJSON } from "react-leaflet";
 import { EditControl } from "react-leaflet-draw";
 import "leaflet/dist/leaflet.css";
 import "leaflet-draw/dist/leaflet.draw.css";
@@ -8,6 +8,7 @@ import { DrawEvents, LatLngLiteral } from "leaflet";
 import { GraveUIPolygon, User } from '../types';
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useToast } from "@chakra-ui/react";
+import { featureCollection } from "./out.tsx";
 import axios from "axios";
 
 function MapPlaceholder() {
@@ -48,7 +49,7 @@ const LeafletMap: React.FC<MapProps> = ({ user }) => {
     return response.data;
   };
 
-  const mutation = useMutation((newPolygon: Layer) => postPolygon(newPolygon), {
+  const postMutation = useMutation((newPolygon: Layer) => postPolygon(newPolygon), {
     onSuccess: (data: any) => {
       toast({
         title: data.id + '-es számú Poligon hozzáadva',
@@ -69,6 +70,45 @@ const LeafletMap: React.FC<MapProps> = ({ user }) => {
     },
   });
 
+  const retrievePolygons = async (): Promise<void> => {
+    try {
+      const response = await axios.get<GraveUIPolygon[]>('https://localhost:7191/api/GraveUIPolygons');
+      const formattedLayers = response.data.map(polygon => ({
+        id: polygon.id,
+        latLngs: polygon.latLngs
+      }));
+      setLayers(formattedLayers);
+    } catch (error) {
+      console.error('Error retrieving polygons:', error);
+    }
+  };
+
+  const deletePolygon = async (id: number): Promise<void> => {
+    try {
+      await axios.delete(`https://localhost:7191/api/GraveUIPolygons/${id}`);
+      setLayers(prevLayers => prevLayers.filter(layer => layer.id !== id));
+      toast({
+        title: `${id}-es számú Poligon törölve`,
+        status: 'success',
+        duration: 3000,
+        isClosable: true,
+      });
+    } catch (error) {
+      console.error('Error deleting polygon:', error);
+      toast({
+        title: 'Hiba történt a poligon törlése során',
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      });
+    }
+  };
+
+  useEffect(() => {
+    retrievePolygons();
+    console.log(featureCollection);
+  }, []);
+
   const _onCreate = (e: DrawEvents.Created) => {
     const layer: any = e.layer;
 
@@ -79,8 +119,17 @@ const LeafletMap: React.FC<MapProps> = ({ user }) => {
       latLngs: layer.getLatLngs()[0]
     };
 
-    mutation.mutate(newLayer);
+    postMutation.mutate(newLayer);
   };
+
+  const _onDelete = (e: DrawEvents.Deleted) => {
+    console.log(e)
+    deletePolygon(48);
+  };
+
+
+  function _onEdit(v: DrawEvents.Edited): void {
+  }
 
   return (
     <MapContainer
@@ -94,12 +143,22 @@ const LeafletMap: React.FC<MapProps> = ({ user }) => {
       maxBounds={[[-50, -80], [49, 80]]}
       maxBoundsViscosity={100}
     >
+      <TileLayer
+        minNativeZoom={0}
+        maxNativeZoom={3}
+        noWrap
+        attribution=""
+        url="/temeto/{z}/{x}/{y}.png"
+      />
       <FeatureGroup>
-        {layers.map(layer => (
-          <Polygon key={layer.id} positions={layer.latLngs} />
-        ))}
+        {
+          //layers.map(layer => (
+          //<Polygon key={layer.id} positions={layer.latLngs} />
+          //))
+        }
 
-        {user && user.role === "Admin" && (
+        {
+          //user && user.role === "Admin" && 
           <EditControl
             position="topright"
             draw={{
@@ -111,17 +170,12 @@ const LeafletMap: React.FC<MapProps> = ({ user }) => {
               circlemarker: false,
             }}
             onCreated={_onCreate}
+            onDeleted={_onDelete}
+            onEdited={_onEdit}
           />
-        )}
-
+        }
+        <GeoJSON data={featureCollection} />
       </FeatureGroup>
-      <TileLayer
-        minNativeZoom={0}
-        maxNativeZoom={3}
-        noWrap
-        attribution=""
-        url="/temeto/{z}/{x}/{y}.png"
-      />
     </MapContainer>
   );
 };
